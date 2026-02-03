@@ -1,0 +1,696 @@
+/* ============================================
+   CALIBEB APP - ESTILOS PRINCIPALES
+   Prototipo móvil para técnicos de campo
+   ============================================ */
+
+/* === IMPORTACIONES === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* === VARIABLES CSS (Design Tokens) === */
+:root {
+    /* Colores Calibeb Brand */
+    --color-primary: #F97316;
+    --color-primary-dark: #EA580C;
+    --color-primary-light: #FED7AA;
+    
+    /* Colores Oscuros */
+    --color-dark-bg: #0F172A;        /* Slate 900 - Fondo principal oscuro */
+    --color-dark-sidebar: #0F172A;    /* Mismo color para consistencia */
+    --color-slate-50: #F8FAFC;
+    --color-slate-100: #F1F5F9;
+    --color-slate-200: #E2E8F0;
+    --color-slate-400: #94A3B8;
+    --color-slate-500: #64748B;
+    --color-slate-700: #334155;
+    --color-slate-800: #1E293B;
+    --color-slate-900: #0F172A;
+    
+    /* Estados */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+    
+    /* Dispositivo Móvil */
+    --device-width: 390px;
+    --device-height: 844px;
+    --device-border: 12px;
+    --device-radius: 45px;
+    --notch-width: 160px;
+    --notch-height: 28px;
+    
+    /* Espaciados (Sistema 8pt) */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    
+    /* Transiciones */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+}
+
+/* === BASE STYLES === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--color-slate-200);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Optimización de rendimiento */
+.screen {
+    will-change: opacity;
+    contain: layout style paint;
+}
+
+.screen.active {
+    contain: none;
+}
+
+/* Optimizar animaciones */
+@media (prefers-reduced-motion: no-preference) {
+    * {
+        scroll-behavior: smooth;
+    }
+}
+
+/* === MARCO DEL DISPOSITIVO === */
+.mobile-frame {
+    width: var(--device-width);
+    height: var(--device-height);
+    background: var(--color-dark-bg);
+    border-radius: var(--device-radius);
+    border: var(--device-border) solid var(--color-dark-sidebar);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-xl);
+}
+
+.notch {
+    width: var(--notch-width);
+    height: var(--notch-height);
+    background: var(--color-dark-sidebar);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 50;
+}
+
+/* === SISTEMA DE PANTALLAS === */
+.screen { 
+    display: none;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    background-color: var(--color-slate-50);
+    position: relative;
+}
+
+.screen.active { 
+    display: flex;
+    flex-direction: column;
+}
+
+/* === UTILIDADES === */
+.no-scrollbar::-webkit-scrollbar { 
+    display: none;
+}
+
+.no-scrollbar { 
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* === COMPONENTES: BOTONES === */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    transition: all var(--transition-base);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-primary:active {
+    background-color: var(--color-primary-dark);
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background-color: var(--color-slate-100);
+    color: var(--color-slate-700);
+    transition: all var(--transition-base);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-slate-200);
+}
+
+/* === COMPONENTES: INPUTS Y SELECT === */
+.input-field {
+    width: 100%;
+    background: transparent;
+    color: white;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border: none;
+    outline: none;
+}
+
+.input-field::placeholder {
+    color: var(--color-slate-500);
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-slate-800);
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-slate-700);
+    overflow: hidden;
+    transition: all var(--transition-base);
+}
+
+.input-container:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+/* Select personalizado */
+.calibeb-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* === COMPONENTES: RADIO BUTTONS === */
+.radio-group {
+    display: flex;
+}
+
+.radio-group input[type="radio"] {
+    display: none;
+}
+
+.radio-group label {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-slate-200);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    background-color: white;
+}
+
+.radio-group label:first-of-type {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.radio-group label:last-of-type {
+    border-radius: 0 0.5rem 0.5rem 0;
+    border-left: none;
+}
+
+.radio-group label:hover {
+    background-color: var(--color-slate-50);
+}
+
+.radio-group input[type="radio"]:checked + label {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.radio-group input[type="radio"]:checked + label + label {
+    border-left-color: var(--color-primary);
+}
+
+/* === COMPONENTES: CHECKBOX === */
+.checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.checkbox-item:hover {
+    border-color: rgba(249, 115, 22, 0.3);
+    background-color: rgba(249, 115, 22, 0.02);
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-top: 0.125rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+}
+
+/* === COMPONENTES: TARJETAS === */
+.card {
+    background: white;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-slate-200);
+    box-shadow: var(--shadow-sm);
+    padding: 1rem;
+    transition: all var(--transition-base);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-interactive {
+    cursor: pointer;
+}
+
+.card-interactive:active {
+    background-color: var(--color-slate-50);
+    transform: scale(0.99);
+}
+
+/* === COMPONENTES: BARRA DE PROGRESO === */
+.progress-bar {
+    width: 100%;
+    height: 0.5rem;
+    background-color: var(--color-slate-100);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: 9999px;
+    transition: width var(--transition-slow);
+}
+
+/* === COMPONENTES: HEADER DE PANTALLA === */
+.screen-header {
+    background: white;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10;
+    border-bottom: 1px solid var(--color-slate-100);
+}
+
+.back-button {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 9999px;
+    background-color: var(--color-slate-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-slate-700);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.back-button:hover {
+    background-color: var(--color-slate-200);
+}
+
+/* === COMPONENTES: FOOTER DE ACCIONES === */
+.action-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    padding: 1rem;
+    border-top: 1px solid var(--color-slate-100);
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+/* === COMPONENTES: NAVEGACIÓN INFERIOR === */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--color-dark-bg);
+    border-top: 1px solid var(--color-slate-800);
+    padding-bottom: 1.5rem;
+    padding-top: 0.75rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-slate-400);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color var(--transition-base);
+}
+
+.nav-item:hover {
+    color: white;
+}
+
+.nav-item.active {
+    color: var(--color-primary);
+}
+
+.nav-item-icon {
+    font-size: 1.25rem;
+}
+
+.nav-item-label {
+    font-size: 0.625rem;
+    font-weight: 500;
+}
+
+.nav-fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -2rem;
+    background-color: var(--color-primary);
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 9999px;
+    box-shadow: var(--shadow-lg);
+    border: 4px solid var(--color-slate-900);
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.nav-fab:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.nav-fab:active {
+    transform: scale(0.95);
+}
+
+/* === COMPONENTES: FOTO PLACEHOLDER === */
+.photo-placeholder {
+    aspect-ratio: 1/1;
+    background-color: var(--color-slate-100);
+    border-radius: 0.75rem;
+    border: 2px dashed var(--color-slate-300);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.photo-placeholder:hover {
+    background-color: var(--color-slate-200);
+    border-color: var(--color-slate-400);
+}
+
+.photo-placeholder i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    transition: transform var(--transition-base);
+}
+
+.photo-placeholder:hover i {
+    transform: scale(1.1);
+}
+
+/* === CLASES DE UTILIDAD PERSONALIZADAS === */
+.bg-dark-sidebar {
+    background-color: var(--color-dark-sidebar) !important;
+}
+
+.bg-dark-bg {
+    background-color: var(--color-dark-bg) !important;
+}
+
+.text-calibeb {
+    color: var(--color-primary) !important;
+}
+
+.border-dark-sidebar {
+    border-color: var(--color-dark-sidebar) !important;
+}
+
+/* === PANTALLA ESPECÍFICA: LOGIN === */
+.login-screen {
+    background-color: var(--color-dark-sidebar);
+}
+
+/* === PANTALLA ESPECÍFICA: DASHBOARD === */
+.dashboard-header {
+    background-color: var(--color-dark-bg);
+    padding-top: 3rem;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 10;
+}
+
+.stat-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-slate-200);
+}
+
+.stat-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+}
+
+/* === PANTALLA ESPECÍFICA: CHECK-IN === */
+.checkin-success-icon {
+    width: 6rem;
+    height: 6rem;
+    background-color: rgba(16, 185, 129, 0.1);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.checkin-success-icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 4px solid rgba(16, 185, 129, 0.5);
+    opacity: 0.25;
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* === ANIMACIONES === */
+@keyframes ping {
+    75%, 100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse-once {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+.animate-pulse-once {
+    animation: pulse-once 0.4s ease-in-out forwards;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === UTILIDADES DE TEXTO === */
+.text-muted {
+    color: var(--color-slate-500);
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* === UTILIDADES DE ACCESIBILIDAD === */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Indicadores de foco mejorados */
+*:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* === UTILIDADES DE ESTADO === */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .mobile-frame {
+        width: 100%;
+        max-width: var(--device-width);
+        height: 100vh;
+        max-height: var(--device-height);
+    }
+}
+
+/* === ESTADOS DE CARGA === */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.hidden {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+/* === MEDIA QUERIES - ACCESIBILIDAD === */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* === OVERLAY Y MODAL (Para futuras extensiones) === */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 40;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
