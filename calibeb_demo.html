@@ -5,22 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calibeb Mobile Demo - Técnico V3</title>
     
-    <!-- CDN Dependencies -->
+    <!-- CDN Dependencies: Tailwind CSS para estilos utility-first -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para iconos -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Estilos Externos -->
+    <!-- Estilos personalizados: mobile-frame, animaciones, componentes -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+    <!-- ============================================
+         MENÚ DE NAVEGACIÓN DE DEMO (Solo Desktop)
+         Permite saltar entre pantallas para testing
+         ============================================ -->
     <nav class="hidden lg:block fixed top-5 left-5 bg-white p-4 rounded-xl shadow-xl z-50 w-72 font-sans max-h-[90vh] overflow-y-auto" role="navigation" aria-label="Menú de navegación de demo">
         <h3 class="font-bold text-slate-800 mb-2 border-b pb-2">Navegación V4 - Flujo Completo</h3>
+        
+        <!-- Grid de botones para navegar entre todas las pantallas -->
         <div class="grid grid-cols-2 gap-2 mb-3">
+            <!-- Pantallas principales del flujo -->
             <button onclick="goTo('login')" class="text-xs bg-slate-100 hover:bg-slate-200 p-2 rounded text-left">Login</button>
             <button onclick="goTo('dashboard')" class="text-xs bg-slate-100 hover:bg-slate-200 p-2 rounded text-left">Dashboard</button>
             <button onclick="goTo('detail')" class="text-xs bg-slate-100 hover:bg-slate-200 p-2 rounded text-left">Detalle</button>
             <button onclick="goTo('checkin')" class="text-xs bg-slate-100 hover:bg-slate-200 p-2 rounded text-left">Check-in</button>
+            
+            <!-- 10 pasos del mantenimiento preventivo -->
             <button onclick="goTo('step1')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P1: Exterior</button>
             <button onclick="goTo('step2')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P2: Válvulas</button>
             <button onclick="goTo('step3')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P3: Refrig</button>
@@ -31,18 +41,29 @@
             <button onclick="goTo('step8')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P8: Bombas</button>
             <button onclick="goTo('step9')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P9: Componen</button>
             <button onclick="goTo('step10')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P10: Calibrac</button>
+            
+            <!-- Pantallas finales -->
             <button onclick="goTo('signature')" class="text-xs bg-blue-50 hover:bg-blue-100 p-2 rounded text-left text-blue-700">Firma</button>
             <button onclick="goTo('success')" class="text-xs bg-emerald-50 hover:bg-emerald-100 p-2 rounded text-left text-emerald-700">✓ Éxito</button>
+            
+            <!-- Flujo alternativo: Mantenimiento correctivo -->
             <button onclick="goTo('corrective')" class="text-xs bg-orange-100 text-orange-700 hover:bg-orange-200 p-2 rounded text-left font-bold">Correctivo</button>
         </div>
+        
         <p class="text-[10px] text-slate-500 bg-slate-100 p-2 rounded">
             <strong>V4:</strong> Flujo completo de 10 pasos según formato real de mantenimiento preventivo.
         </p>
     </nav>
 
+    <!-- ============================================
+         CONTENEDOR PRINCIPAL - Simulador de iPhone
+         Contiene todas las pantallas de la SPA
+         ============================================ -->
     <div class="mobile-frame" role="main" aria-label="Simulador de aplicación móvil">
+        <!-- Notch del iPhone (muesca superior) -->
         <div class="notch" aria-hidden="true"></div>
         
+        <!-- Barra de estado (hora, señal, wifi, batería) -->
         <div class="absolute top-0 w-full px-6 pt-3 pb-1 flex justify-between items-end z-40 text-xs font-bold text-white mix-blend-difference" role="status" aria-label="Barra de estado del dispositivo">
             <span>9:41</span>
             <div class="flex gap-1.5">
@@ -52,18 +73,27 @@
             </div>
         </div>
 
+        <!-- ============================================
+             PANTALLA 1: LOGIN
+             Primera pantalla que ve el usuario
+             Clase "active" determina qué pantalla se muestra
+             ============================================ -->
         <div id="login" class="screen active bg-dark-sidebar items-center justify-center p-8" role="region" aria-label="Pantalla de inicio de sesión">
             <div class="w-full max-w-xs -mt-16">
+                <!-- Logo de Calibeb -->
                 <div class="flex justify-center mb-6">
                     <img src="calibeb_logo-removebg-preview.png" alt="Calibeb Logo" class="h-24 w-auto object-contain">
                 </div>
 
+                <!-- Título y descripción -->
                 <div class="mb-8 text-center">
                     <h1 class="text-2xl font-bold text-white">App Técnico</h1>
                     <p class="text-slate-400 text-sm mt-1">Gestión de mantenimiento en campo</p>
                 </div>
 
+                <!-- Formulario de login -->
                 <form class="space-y-4" onsubmit="event.preventDefault(); goTo('dashboard');" role="form" aria-label="Formulario de inicio de sesión">
+                    <!-- Campo Email -->
                     <div>
                         <label for="email-input" class="block text-xs font-bold text-slate-400 uppercase mb-1">Email</label>
                         <div class="flex items-center bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
@@ -71,6 +101,8 @@
                             <input id="email-input" type="email" value="tecnico@calibeb.com" class="w-full bg-transparent text-white px-3 py-3 text-sm focus:outline-none placeholder-slate-500" aria-label="Correo electrónico" autocomplete="email">
                         </div>
                     </div>
+                    
+                    <!-- Campo Contraseña -->
                     <div>
                         <label for="password-input" class="block text-xs font-bold text-slate-400 uppercase mb-1">Contraseña</label>
                         <div class="flex items-center bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
@@ -79,6 +111,7 @@
                         </div>
                     </div>
 
+                    <!-- Botón submit - Al hacer submit, navega a dashboard -->
                     <button type="submit" class="w-full btn-primary font-bold py-3.5 rounded-lg shadow-lg mt-6 flex items-center justify-center gap-2" aria-label="Iniciar sesión en la aplicación">
                         Iniciar Sesión <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
@@ -86,6 +119,10 @@
             </div>
         </div>
 
+        <!-- ============================================
+             PANTALLA 2: DASHBOARD
+             Muestra agenda de trabajos y estadísticas
+             ============================================ -->
         <div id="dashboard" class="screen bg-slate-50" role="region" aria-label="Panel principal y agenda de trabajo">
             <div class="bg-dark-sidebar pt-12 pb-6 px-6 rounded-b-3xl shadow-lg z-10">
                 <div class="flex justify-between items-center mb-4">

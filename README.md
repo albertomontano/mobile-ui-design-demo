@@ -11,7 +11,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/es/docs/Web/JavaScript)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 
-[Demo en vivo](#-inicio-rápido) • [Documentación](#-documentación) • [Características](#-características-principales)
+[Demo en vivo](#-inicio-rápido) • [Documentación](#-estructura-del-proyecto) • [Características](#-características-principales)
 
 </div>
 
@@ -19,14 +19,21 @@
 
 ## 📋 Descripción
 
-**Calibeb App** es un prototipo de aplicación móvil diseñado para técnicos de campo que realizan mantenimiento preventivo y correctivo en equipos dispensadores de bebidas. La aplicación simula un flujo completo de trabajo desde el login hasta la firma digital del cliente.
+**Calibeb App** es un prototipo de aplicación móvil completamente funcional diseñado para técnicos de campo que realizan mantenimiento preventivo y correctivo en equipos dispensadores de bebidas. Implementado como una **Single Page Application (SPA)** con JavaScript vanilla, simula un flujo completo de trabajo desde el login hasta la firma digital del cliente.
 
 ### 🎯 Propósito
 
 - **Demo funcional** para presentación a clientes y stakeholders
 - **Prototipo de alta fidelidad** con interacciones reales
-- **Base de código modular** lista para escalamiento a producción
+- **Código bien documentado** con comentarios exhaustivos para facilitar comprensión y mantenimiento
 - **Referencia de diseño** para equipos de desarrollo
+
+### 🏗️ Arquitectura
+
+- **SPA (Single Page Application):** Todas las pantallas en un solo archivo HTML
+- **Navegación controlada:** Sistema de pantallas con función `goTo(screenId)`
+- **Estado persistente:** LocalStorage para guardar progreso de checklists
+- **Diseño responsive:** Mobile-first con simulador de iPhone integrado
 
 ---
 
@@ -35,40 +42,52 @@
 ### 🔐 Autenticación
 - Login simulado con validación de formulario
 - Interfaz oscura elegante con branding Calibeb
+- Navegación automática al Dashboard tras login
 
 ### 📊 Dashboard Inteligente
-- Estadísticas en tiempo real (Hoy / Esta Semana)
-- Lista de órdenes de trabajo pendientes
-- Integración con sistema de datos mock
-- Acceso rápido a mantenimiento correctivo
+- **Selector de rango temporal:** Visualiza trabajos de "Hoy" o "Esta Semana"
+- **Estadísticas en tiempo real:** Mantenimientos completados vs pendientes
+- **Lista de órdenes:** Tarjetas clickeables con información detallada
+- **Acceso rápido:** Botón destacado para mantenimiento correctivo de emergencia
 
-### 🛠️ Flujo de Mantenimiento Preventivo
-1. **Check-in GPS:** Validación de ubicación simulada
-2. **Paso 1 - Exterior:** Verificación de limpieza y componentes
-3. **Paso 2 - Válvulas:** Inspección de sistema de dispensado
-4. **Firma Digital:** Captura de firma del cliente con canvas
+### 🛠️ Flujo de Mantenimiento Preventivo (10 Pasos)
+1. **Check-in GPS:** Validación de ubicación simulada con geolocalización
+2. **Paso 1 - Limpieza Exterior:** Verificación visual y checklist de limpieza
+3. **Paso 2 - Sistema de Válvulas:** Inspección de válvulas de dispensado
+4. **Paso 3 - Refrigeración:** Verificación de temperaturas y componentes
+5. **Paso 4 - Compresor:** Revisión de motor y conexiones eléctricas
+6. **Paso 5 - Filtración:** Inspección de filtros de agua y CO2
+7. **Paso 6 - Sistema de Desagüe:** Limpieza y verificación de drenajes
+8. **Paso 7 - Carbonatación:** Ajuste de presiones y prueba de calidad
+9. **Paso 8 - Bombas:** Revisión de bomba de agua y jarabe
+10. **Paso 9 - Componentes:** Verificación de tarjetas electrónicas
+11. **Paso 10 - Calibración:** Ajuste final de mezclas y prueba de sabor
+12. **Firma Digital:** Captura de firma del cliente con canvas interactivo
 
 ### 🚨 Mantenimiento Correctivo
-- Flujo paralelo para urgencias
-- Captura de 3 fotos (antes, durante, después)
-- Descripción detallada de falla y solución
-- Validación de campos requeridos
+- Flujo paralelo para atención de urgencias y fallas
+- **Captura de 3 fotos:** Antes, durante y después de la reparación
+- **Descripción detallada:** Campos para registrar falla y solución aplicada
+- **Validación de campos:** Formulario con requisitos mínimos
 
 ### 📸 Captura de Fotos Simulada
-- Generación de imágenes mock con Canvas API
-- Persistencia en localStorage
-- Actualización visual inmediata
+- Generación automática de imágenes mock usando Canvas API
+- Persistencia en localStorage para mantener fotos entre sesiones
+- Visualización con miniaturas y opción de eliminar
+- Actualización visual inmediata sin recargar página
 
 ### ✅ Checklists Persistentes
-- Auto-guardado de estado en localStorage
-- Restauración automática al recargar
-- Tracking de progreso por pantalla
+- **Auto-guardado:** Estado de checkboxes guardado automáticamente en localStorage
+- **Restauración automática:** Al recargar, recupera el progreso exacto
+- **Tracking visual:** Indicadores de progreso por cada paso
+- **Sincronización:** Cambios reflejados instantáneamente
 
 ### ✍️ Firma Digital
-- Canvas interactivo con soporte táctil
-- Compatibilidad mouse y touch
-- Exportación a PNG
-- Botón de limpieza
+- Canvas HTML5 interactivo con eventos touch y mouse
+- Soporte completo para dispositivos táctiles y computadoras
+- Exportación a imagen PNG
+- Botón de limpieza para reiniciar firma
+- Validación antes de continuar
 
 ---
 
@@ -76,27 +95,56 @@
 
 ### Prerrequisitos
 
-- Navegador moderno (Chrome 90+, Firefox 88+, Safari 14+)
-- Servidor web local (opcional, pero recomendado)
+- Navegador moderno actualizado:
+  - Chrome 90+ / Edge 90+
+  - Firefox 88+
+  - Safari 14+
+- Servidor web local (opcional pero recomendado para evitar problemas con CORS)
 
-### Opción 1: Abrir directamente
+### Opción 1: Abrir directamente en navegador
 
 ```bash
-# Windows
+# Windows - Doble click o ejecutar desde cmd
 start calibeb_demo.html
 
-# macOS
+# macOS - Desde Terminal
 open calibeb_demo.html
 
-# Linux
+# Linux - Desde Terminal
 xdg-open calibeb_demo.html
 ```
 
-### Opción 2: Servidor local
+### Opción 2: Con Live Server (VSCode)
+
+1. Instala la extensión "Live Server" en Visual Studio Code
+2. Click derecho en `calibeb_demo.html`
+3. Selecciona "Open with Live Server"
+4. La app se abrirá automáticamente en `http://127.0.0.1:5500`
+
+### Opción 3: Servidor Python
 
 ```bash
 # Python 3
 python -m http.server 8000
+
+# Abre en navegador: http://localhost:8000/calibeb_demo.html
+```
+
+### Opción 4: Node.js http-server
+
+```bash
+# Instalar http-server globalmente
+npm install -g http-server
+
+# Ejecutar en el directorio del proyecto
+http-server -p 8000
+
+# Abre: http://localhost:8000/calibeb_demo.html
+```
+
+---
+
+## 📁 Estructura del Proyecto
 
 # Node.js (http-server)
 npx http-server
