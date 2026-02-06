@@ -694,3 +694,28 @@ textarea:focus-visible {
 .overlay.active {
     display: block;
 }
+
+/* === RESPONSIVE - DISPOSITIVOS MÓVILES REALES === */
+@media (max-width: 480px) {
+    body {
+        padding: 0;
+        align-items: flex-start;
+    }
+    
+    .mobile-frame {
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .notch {
+        display: none;
+    }
+    
+    .screen {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
