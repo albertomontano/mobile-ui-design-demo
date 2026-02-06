@@ -30,17 +30,14 @@
             <button onclick="goTo('detail')" class="text-xs bg-slate-100 hover:bg-slate-200 p-2 rounded text-left">Detalle</button>
             <button onclick="goTo('checkin')" class="text-xs bg-slate-100 hover:bg-slate-200 p-2 rounded text-left">Check-in</button>
             
-            <!-- 10 pasos del mantenimiento preventivo -->
+            <!-- 7 pasos del mantenimiento preventivo (consolidados) -->
             <button onclick="goTo('step1')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P1: Exterior</button>
             <button onclick="goTo('step2')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P2: Válvulas</button>
             <button onclick="goTo('step3')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P3: Refrig</button>
-            <button onclick="goTo('step4')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P4: Compresor</button>
-            <button onclick="goTo('step5')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P5: Filtración</button>
-            <button onclick="goTo('step6')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P6: Desagüe</button>
-            <button onclick="goTo('step7')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P7: Carbonat</button>
-            <button onclick="goTo('step8')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P8: Bombas</button>
-            <button onclick="goTo('step9')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P9: Componen</button>
-            <button onclick="goTo('step10')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P10: Calibrac</button>
+            <button onclick="goTo('step4')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P4: Filt+Desagüe</button>
+            <button onclick="goTo('step5')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P5: Bombas</button>
+            <button onclick="goTo('step6')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P6: Componen</button>
+            <button onclick="goTo('step7')" class="text-xs bg-green-50 hover:bg-green-100 p-2 rounded text-left text-green-700">P7: Calibrac</button>
             
             <!-- Pantallas finales -->
             <button onclick="goTo('signature')" class="text-xs bg-blue-50 hover:bg-blue-100 p-2 rounded text-left text-blue-700">Firma</button>
@@ -51,7 +48,7 @@
         </div>
         
         <p class="text-[10px] text-slate-500 bg-slate-100 p-2 rounded">
-            <strong>V4:</strong> Flujo completo de 10 pasos según formato real de mantenimiento preventivo.
+            <strong>V5:</strong> Flujo optimizado de 7 pasos consolidados según requerimientos del cliente (Feb 2026).
         </p>
     </nav>
 
@@ -168,34 +165,103 @@
                             <span class="text-slate-500 text-xs font-semibold">Pendientes</span>
                             <span class="bg-orange-50 text-orange-600 p-1.5 rounded-md text-xs"><i class="far fa-clock"></i></span>
                         </div>
-                        <p id="stat-pending" class="text-2xl font-bold text-slate-800 animate-pulse-once">3</p>
+                        <p id="stat-pending" class="text-2xl font-bold text-slate-800 animate-pulse-once">5</p>
                     </div>
                 </div>
 
                 <h3 id="agenda-title" class="text-slate-800 font-bold mb-3 text-lg transition-all">Agenda de Hoy</h3>
                 
                 <div class="space-y-3">
-                    <div onclick="goTo('detail')" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 border-l-4 border-l-orange-500 active:bg-slate-50 transition cursor-pointer relative overflow-hidden">
-                        <div class="flex justify-between mb-1">
-                            <span class="text-xs font-bold text-slate-400">MNT-2026-123</span>
-                             <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">PENDIENTE</span>
+                    <!-- URGENTE - Marco Rojo -->
+                    <div onclick="goTo('detail')" class="bg-white p-4 rounded-xl shadow-sm border-2 border-red-500 border-l-4 border-l-red-600 active:bg-slate-50 transition cursor-pointer relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-bold text-slate-400">MNT-2026-125</span>
+                            <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">URGENTE</span>
                         </div>
-                        <h4 class="text-slate-800 font-bold text-base">Aptiv Planta 5</h4>
-                        <p class="text-sm text-slate-500 mb-2 truncate">Prev. Dispensador Crathco</p>
-                        <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                            <i class="far fa-clock text-orange-500"></i> 09:00 AM - 10:30 AM
+                        <h4 class="text-slate-800 font-bold text-base">Hotel Grand Marquis</h4>
+                        <p class="text-sm text-slate-500 mb-2 truncate">Prev. Dispensador Bebidas Calientes</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                                <i class="far fa-clock text-red-500"></i> 07:00 AM - 08:30 AM
+                            </div>
+                            <span class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">Correctivo</span>
                         </div>
                     </div>
 
+                    <!-- RETRASADO -->
+                    <div onclick="goTo('detail')" class="bg-white p-4 rounded-xl shadow-sm border border-amber-300 border-l-4 border-l-amber-500 active:bg-slate-50 transition cursor-pointer relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-bold text-slate-400">MNT-2026-118</span>
+                            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">RETRASADO</span>
+                        </div>
+                        <h4 class="text-slate-800 font-bold text-base">Centro Comercial Altaria</h4>
+                        <p class="text-sm text-slate-500 mb-2 truncate">Prev. Máquina Expendedora Snacks</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                                <i class="fas fa-exclamation-triangle text-amber-600"></i> Debió terminar ayer
+                            </div>
+                            <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">Preventivo</span>
+                        </div>
+                    </div>
+
+                    <!-- AGRUPACIÓN APTIV PLANTA 5 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                        <!-- Header del grupo -->
+                        <div class="bg-orange-50 border-b border-orange-100 px-4 py-2 flex items-center gap-2">
+                            <i class="fas fa-building text-orange-600 text-sm"></i>
+                            <span class="text-xs font-bold text-orange-700">Aptiv Planta 5</span>
+                            <span class="ml-auto text-[10px] bg-white text-orange-600 px-2 py-0.5 rounded font-semibold">2 Equipos</span>
+                        </div>
+                        
+                        <!-- Mantenimientos agrupados -->
+                        <div class="divide-y divide-slate-200">
+                            <!-- Mantenimiento 1 - MNT-2026-123 -->
+                            <div onclick="goTo('detail')" class="bg-white p-4 hover:bg-slate-50 active:bg-slate-100 transition cursor-pointer border-l-4 border-l-orange-500">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span class="text-xs font-bold text-slate-400">MNT-2026-123</span>
+                                    <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">PENDIENTE</span>
+                                </div>
+                                <h4 class="text-slate-800 font-semibold text-sm">Dispensador Crathco #1</h4>
+                                <p class="text-xs text-slate-500 mb-2">Prev. Limpieza y calibración</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                                        <i class="far fa-clock text-orange-500"></i> 09:00 AM - 10:30 AM
+                                    </div>
+                                    <span class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">Correctivo</span>
+                                </div>
+                            </div>
+
+                            <!-- Mantenimiento 2 - MNT-2026-124 -->
+                            <div onclick="goTo('detail')" class="bg-white p-4 hover:bg-slate-50 active:bg-slate-100 transition cursor-pointer border-l-4 border-l-orange-500">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span class="text-xs font-bold text-slate-400">MNT-2026-124</span>
+                                    <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">PENDIENTE</span>
+                                </div>
+                                <h4 class="text-slate-800 font-semibold text-sm">Dispensador Crathco #2</h4>
+                                <p class="text-xs text-slate-500 mb-2">Prev. Cambio de filtros</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                                        <i class="far fa-clock text-orange-500"></i> 10:30 AM - 12:00 PM
+                                    </div>
+                                    <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">Preventivo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COMPLETADO - Con tag Preventivo -->
                     <div class="bg-slate-100 p-4 rounded-xl shadow-sm border border-slate-200 border-l-4 border-l-green-500 opacity-75">
-                         <div class="flex justify-between mb-1">
+                        <div class="flex justify-between items-start mb-1">
                             <span class="text-xs font-bold text-slate-400">MNT-2026-120</span>
-                             <span class="text-xs font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded">COMPLETADO</span>
+                            <span class="text-xs font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded">COMPLETADO</span>
                         </div>
                         <h4 class="text-slate-700 font-bold text-base line-through">Comedor Industrial Bajío</h4>
-                        <p class="text-sm text-slate-500 mb-2 truncate">Correctivo Máquina de Hielo</p>
-                        <div class="flex items-center gap-2 text-xs text-slate-500">
-                            <i class="fas fa-check text-green-600"></i> Finalizado 08:15 AM
+                        <p class="text-sm text-slate-500 mb-2 truncate">Mantenimiento Dispensador Crathco</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2 text-xs text-slate-500">
+                                <i class="fas fa-check text-green-600"></i> Finalizado 08:15 AM
+                            </div>
+                            <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">Preventivo</span>
                         </div>
                     </div>
                 </div>
@@ -262,7 +328,7 @@
                     <i class="fas fa-map-marker-alt"></i> Validar Ubicación (Check-in)
                 </button>
 
-                <h3 class="text-sm font-bold text-slate-800 mb-3">Pasos a realizar (10)</h3>
+                <h3 class="text-sm font-bold text-slate-800 mb-3">Pasos a realizar (7)</h3>
                 <div class="space-y-3 opacity-60 pointer-events-none select-none">
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
                         <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">1</div>
@@ -278,30 +344,18 @@
                     </div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
                         <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">4</div>
-                        <span class="text-sm font-medium text-slate-600">Condensador y Compresor</span>
+                        <span class="text-sm font-medium text-slate-600">Filtración y Desagüe</span>
                     </div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
                         <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">5</div>
-                        <span class="text-sm font-medium text-slate-600">Filtración</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
-                        <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">6</div>
-                        <span class="text-sm font-medium text-slate-600">Desagüe</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
-                        <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">7</div>
-                        <span class="text-sm font-medium text-slate-600">Carbonatador</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
-                        <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">8</div>
                         <span class="text-sm font-medium text-slate-600">Bombas</span>
                     </div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
-                        <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">9</div>
-                        <span class="text-sm font-medium text-slate-600">Motor, Transformador y Manómetro</span>
+                        <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">6</div>
+                        <span class="text-sm font-medium text-slate-600">Componentes Adicionales</span>
                     </div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4 shadow-sm">
-                        <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">10</div>
+                        <div class="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-300 font-bold text-sm">7</div>
                         <span class="text-sm font-medium text-slate-600">Calibración de Válvulas</span>
                     </div>
                 </div>
@@ -338,8 +392,106 @@
                     </div>
                 </div>
 
+                <button onclick="goTo('qr-scan')" class="w-full btn-primary py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99]">
+                    Continuar con Escaneo QR
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA: ESCANEO DE QR -->
+        <div id="qr-scan" class="screen bg-slate-50">
+            <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
+                <div class="flex items-center gap-4 mb-2">
+                    <button onclick="goTo('checkin')" class="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-slate-600">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-slate-800">Escaneo de QR</h2>
+                </div>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
+                <div class="bg-white border-2 border-dashed border-slate-300 rounded-xl p-8 mb-6 flex flex-col items-center justify-center min-h-[300px]">
+                    <div class="w-32 h-32 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-qrcode text-slate-400 text-6xl"></i>
+                    </div>
+                    <p class="text-slate-600 text-center text-sm mb-4">Escanea el código QR de la máquina</p>
+                    <button class="btn-primary py-3 px-6 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center gap-2">
+                        <i class="fas fa-camera"></i> Abrir Cámara
+                    </button>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="qr-unavailable-checkbox" onchange="toggleQRExplanation(this.checked)" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-slate-300 focus:ring-orange-500 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 leading-tight">QR no disponible</span>
+                    </label>
+                </div>
+
+                <div id="qr-explanation" style="display: none;">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Explicación <span class="text-red-500">*</span></label>
+                    <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none shadow-sm" placeholder="Ej. QR dañado/roto"></textarea>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
+                <button onclick="validateQR()" class="w-full btn-primary py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99]">
+                    Validar y Continuar
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA: QR VALIDADO -->
+        <div id="qr-validated" class="screen bg-white relative">
+            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-green-50 to-white">
+                
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6 relative">
+                    <div class="absolute inset-0 rounded-full border-4 border-green-500 opacity-25 animate-ping"></div>
+                    <i class="fas fa-qrcode text-green-600 text-4xl"></i>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">QR Validado</h2>
+                <p class="text-slate-500 text-center mb-8 text-sm max-w-[280px]">El código QR ha sido verificado correctamente. Máquina confirmada.</p>
+
+                <div class="w-full bg-white border border-slate-200 rounded-xl p-5 mb-8 shadow-sm">
+                    <div class="flex justify-between py-2 border-b border-slate-100">
+                        <span class="text-slate-500 text-xs flex items-center gap-2"><i class="fas fa-barcode text-slate-400"></i> Código QR</span>
+                        <span class="text-slate-800 text-xs font-bold font-mono">DISP-2024-45</span>
+                    </div>
+                    <div class="flex justify-between py-2 pt-3">
+                         <span class="text-slate-500 text-xs flex items-center gap-2"><i class="far fa-clock text-slate-400"></i> Hora Validación</span>
+                        <span class="text-slate-800 text-xs font-bold">09:16 AM</span>
+                    </div>
+                </div>
+
                 <button onclick="goTo('step1')" class="w-full btn-primary py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99]">
                     Comenzar Mantenimiento
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA: CONTINUAR SIN QR -->
+        <div id="qr-unavailable" class="screen bg-white relative">
+            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-orange-50 to-white">
+                
+                <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 relative">
+                    <i class="fas fa-exclamation-triangle text-orange-600 text-4xl"></i>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Continuar con Mantenimiento</h2>
+                <p class="text-slate-500 text-center mb-8 text-sm max-w-[280px]">El QR no está disponible. Se ha registrado tu explicación y puedes proceder.</p>
+
+                <div class="w-full bg-white border border-orange-200 rounded-xl p-5 mb-8 shadow-sm">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-info-circle text-orange-500 text-lg mt-0.5"></i>
+                        <div>
+                            <p class="text-xs font-bold text-slate-700 mb-1">Nota Importante</p>
+                            <p class="text-xs text-slate-600">Esta incidencia quedará registrada en el reporte final del mantenimiento.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="goTo('step1')" class="w-full btn-primary py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99]">
+                    Continuar con Mantenimiento
                 </button>
             </div>
         </div>
@@ -347,12 +499,12 @@
         <div id="step1" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 1 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">10% completado</span>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 1 de 7</span>
+                    <span class="text-xs font-bold text-slate-400">14% completado</span>
                 </div>
                 <h2 class="text-xl font-bold text-slate-800 mt-3">Exterior de Máquina</h2>
                 <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[10%] rounded-full relative"></div>
+                    <div class="h-full bg-orange-500 w-[14%] rounded-full relative"></div>
                 </div>
             </div>
 
@@ -426,12 +578,12 @@
         <div id="step2" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 2 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">20% completado</span>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 2 de 7</span>
+                    <span class="text-xs font-bold text-slate-400">29% completado</span>
                 </div>
                 <h2 class="text-xl font-bold text-slate-800 mt-3">Válvulas</h2>
                 <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[20%] rounded-full relative"></div>
+                    <div class="h-full bg-orange-500 w-[29%] rounded-full relative"></div>
                 </div>
             </div>
 
@@ -487,41 +639,96 @@
             </div>
         </div>
 
-        <!-- PASO 3: UNIDAD DE REFRIGERACIÓN -->
+        <!-- PASO 3: UNIDAD DE REFRIGERACIÓN (CONSOLIDADO) -->
         <div id="step3" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 3 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">30% completado</span>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 3 de 7</span>
+                    <span class="text-xs font-bold text-slate-400">43% completado</span>
                 </div>
                 <h2 class="text-xl font-bold text-slate-800 mt-3">Unidad de Refrigeración</h2>
                 <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[30%] rounded-full relative"></div>
+                    <div class="h-full bg-orange-500 w-[43%] rounded-full relative"></div>
                 </div>
             </div>
 
             <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Temperaturas</h3>
-                <div class="space-y-4 mb-8">
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Temperatura Inicial (°C)</label>
-                        <input type="number" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Ej: 8">
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Temperatura Final (°C)</label>
-                        <input type="number" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Ej: 3">
-                    </div>
+                <!-- CHECKBOX "NO APLICA" -->
+                <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-4 mb-6">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="step3-no-aplica" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-orange-300 focus:ring-orange-500 cursor-pointer" onchange="document.getElementById('step3-content').style.opacity = this.checked ? '0.4' : '1'; document.getElementById('step3-content').style.pointerEvents = this.checked ? 'none' : 'auto';">
+                        <div>
+                            <span class="text-sm font-bold text-orange-800 block">No Aplica</span>
+                            <span class="text-xs text-orange-600">Marcar si este paso no es necesario</span>
+                        </div>
+                    </label>
                 </div>
 
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia Fotográfica</h3>
-                <button class="w-full bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-4 text-slate-400 hover:text-slate-600 font-bold text-sm flex items-center justify-center gap-2 transition group mb-8">
-                    <i class="fas fa-camera text-lg group-hover:scale-110 transition"></i>
-                    <span>Agregar Foto</span>
-                    <span class="text-xs font-normal opacity-60">(máx. 5)</span>
-                </button>
+                <div id="step3-content" class="transition-opacity duration-300">
+                    <!-- TEMPERATURA -->
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Temperatura</h3>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-6">
+                        <p class="text-sm font-medium text-slate-700 mb-3">Estado de temperatura:</p>
+                        <div class="flex radio-group">
+                            <input type="radio" id="temp-bien" name="temperatura" checked>
+                            <label for="temp-bien" class="flex-1 text-center text-sm">Bien</label>
+                            <input type="radio" id="temp-mal" name="temperatura">
+                            <label for="temp-mal" class="flex-1 text-center text-sm">Mal</label>
+                        </div>
+                    </div>
 
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Notas del Técnico</h3>
-                <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none shadow-sm" placeholder="Observaciones sobre este paso..."></textarea>
+                    <!-- LIMPIEZA CONDENSADOR -->
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Limpieza de Condensador</h3>
+                    <div class="mb-6 space-y-3">
+                        <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-orange-300">
+                            <input type="checkbox" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-slate-300 focus:ring-orange-500 cursor-pointer">
+                            <span class="text-sm font-medium text-slate-700 leading-tight">Limpieza de condensador</span>
+                        </label>
+                    </div>
+
+                    <!-- REVISIÓN COMPONENTES COMPRESOR -->
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Componentes del Compresor</h3>
+                    <div class="mb-6 space-y-3">
+                        <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-orange-300">
+                            <input type="checkbox" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-slate-300 focus:ring-orange-500 cursor-pointer">
+                            <span class="text-sm font-medium text-slate-700 leading-tight">Revisión de componentes de compresor</span>
+                        </label>
+                    </div>
+
+                    <!-- MOTOR AGITADOR -->
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Motor Agitador</h3>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-6">
+                        <p class="text-sm font-medium text-slate-700 mb-3">Condición:</p>
+                        <div class="flex radio-group">
+                            <input type="radio" id="agitador-bien" name="motor-agitador" checked>
+                            <label for="agitador-bien" class="flex-1 text-center text-sm">Bien</label>
+                            <input type="radio" id="agitador-mal" name="motor-agitador">
+                            <label for="agitador-mal" class="flex-1 text-center text-sm">Mal</label>
+                        </div>
+                    </div>
+
+                    <!-- MOTOR CONDENSADOR -->
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Motor Condensador</h3>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-6">
+                        <p class="text-sm font-medium text-slate-700 mb-3">Condición:</p>
+                        <div class="flex radio-group">
+                            <input type="radio" id="condensador-bien" name="motor-condensador" checked>
+                            <label for="condensador-bien" class="flex-1 text-center text-sm">Bien</label>
+                            <input type="radio" id="condensador-mal" name="motor-condensador">
+                            <label for="condensador-mal" class="flex-1 text-center text-sm">Mal</label>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia Fotográfica</h3>
+                    <button class="w-full bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-4 text-slate-400 hover:text-slate-600 font-bold text-sm flex items-center justify-center gap-2 transition group mb-8">
+                        <i class="fas fa-camera text-lg group-hover:scale-110 transition"></i>
+                        <span>Agregar Foto</span>
+                        <span class="text-xs font-normal opacity-60">(máx. 5)</span>
+                    </button>
+
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Notas del Técnico</h3>
+                    <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none shadow-sm" placeholder="Observaciones sobre este paso..."></textarea>
+                </div>
             </div>
 
             <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
@@ -535,88 +742,23 @@
             </div>
         </div>
 
-        <!-- PASO 4: CONDENSADOR Y COMPRESOR -->
+        <!-- PASO 4: FILTRACIÓN Y DESAGÜE (CONSOLIDADO) -->
         <div id="step4" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 4 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">40% completado</span>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 4 de 7</span>
+                    <span class="text-xs font-bold text-slate-400">57% completado</span>
                 </div>
-                <h2 class="text-xl font-bold text-slate-800 mt-3">Condensador y Compresor</h2>
+                <h2 class="text-xl font-bold text-slate-800 mt-3">Filtración y Desagüe</h2>
                 <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[40%] rounded-full relative"></div>
+                    <div class="h-full bg-orange-500 w-[57%] rounded-full relative"></div>
                 </div>
             </div>
 
             <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
-                <div class="mb-8 space-y-3">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Lista de Verificación</h3>
-                    
-                    <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-orange-300">
-                        <input type="checkbox" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-slate-300 focus:ring-orange-500 cursor-pointer">
-                        <span class="text-sm font-medium text-slate-700 leading-tight">Limpieza de condensador</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-orange-300">
-                        <input type="checkbox" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-slate-300 focus:ring-orange-500 cursor-pointer">
-                        <span class="text-sm font-medium text-slate-700 leading-tight">Revisión de componentes de compresor</span>
-                    </label>
-                </div>
-
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Componentes del Compresor</h3>
-                <div class="space-y-4 mb-8">
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Térmico</label>
-                        <input type="text" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Estado o medición">
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Reley</label>
-                        <input type="text" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Estado o medición">
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Capacitor</label>
-                        <input type="text" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Estado o medición">
-                    </div>
-                </div>
-
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia Fotográfica</h3>
-                <button class="w-full bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-4 text-slate-400 hover:text-slate-600 font-bold text-sm flex items-center justify-center gap-2 transition group mb-8">
-                    <i class="fas fa-camera text-lg group-hover:scale-110 transition"></i>
-                    <span>Agregar Foto</span>
-                    <span class="text-xs font-normal opacity-60">(máx. 5)</span>
-                </button>
-
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Notas del Técnico</h3>
-                <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none shadow-sm" placeholder="Observaciones sobre este paso..."></textarea>
-            </div>
-
-            <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
-                <button onclick="goTo('step3')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
-                <button onclick="goTo('step5')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
-                    Siguiente Paso <i class="fas fa-chevron-right text-xs"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- PASO 5: FILTRACIÓN -->
-        <div id="step5" class="screen bg-slate-50">
-            <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 5 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">50% completado</span>
-                </div>
-                <h2 class="text-xl font-bold text-slate-800 mt-3">Filtración</h2>
-                <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[50%] rounded-full relative"></div>
-                </div>
-            </div>
-
-            <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
-                <div class="mb-8 space-y-3">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Lista de Verificación</h3>
-                    
+                <!-- FILTRACIÓN -->
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Filtración</h3>
+                <div class="mb-6 space-y-3">
                     <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-orange-300">
                         <input type="checkbox" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-slate-300 focus:ring-orange-500 cursor-pointer">
                         <span class="text-sm font-medium text-slate-700 leading-tight">Limpiar Portafiltros</span>
@@ -633,50 +775,14 @@
                     </div>
                 </div>
 
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Fecha de Vencimiento</h3>
-                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-8">
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Fecha de Vencimiento Filtro</h3>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-6">
                     <input type="date" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500">
                 </div>
 
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia Fotográfica</h3>
-                <button class="w-full bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-4 text-slate-400 hover:text-slate-600 font-bold text-sm flex items-center justify-center gap-2 transition group mb-8">
-                    <i class="fas fa-camera text-lg group-hover:scale-110 transition"></i>
-                    <span>Agregar Foto</span>
-                    <span class="text-xs font-normal opacity-60">(máx. 5)</span>
-                </button>
-
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Notas del Técnico</h3>
-                <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none shadow-sm" placeholder="Observaciones sobre este paso..."></textarea>
-            </div>
-
-            <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
-                <button onclick="goTo('step4')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
-                <button onclick="goTo('step6')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
-                    Siguiente Paso <i class="fas fa-chevron-right text-xs"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- PASO 6: DESAGÜE -->
-        <div id="step6" class="screen bg-slate-50">
-            <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 6 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">60% completado</span>
-                </div>
-                <h2 class="text-xl font-bold text-slate-800 mt-3">Desagüe</h2>
-                <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[60%] rounded-full relative"></div>
-                </div>
-            </div>
-
-            <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
-                <div class="mb-8 space-y-3">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Lista de Verificación</h3>
-                    
+                <!-- DESAGÜE -->
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Desagüe</h3>
+                <div class="mb-6 space-y-3">
                     <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-orange-300">
                         <input type="checkbox" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-slate-300 focus:ring-orange-500 cursor-pointer">
                         <span class="text-sm font-medium text-slate-700 leading-tight">Revisión y limpieza de charola de desagüe</span>
@@ -705,85 +811,26 @@
             </div>
 
             <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
-                <button onclick="goTo('step5')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
+                <button onclick="goTo('step3')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
-                <button onclick="goTo('step7')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+                <button onclick="goTo('step5')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
                     Siguiente Paso <i class="fas fa-chevron-right text-xs"></i>
                 </button>
             </div>
         </div>
 
-        <!-- PASO 7: CARBONATADOR -->
-        <div id="step7" class="screen bg-slate-50">
+        <!-- PASO 5: BOMBAS -->
+        <div id="step5" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 7 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">70% completado</span>
-                </div>
-                <h2 class="text-xl font-bold text-slate-800 mt-3">Carbonatador</h2>
-                <p class="text-xs text-slate-500 mt-1">(Sólo si tienen refresco)</p>
-                <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[70%] rounded-full relative"></div>
-                </div>
-            </div>
-
-            <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
-                <div class="mb-8 space-y-4">
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <p class="text-sm font-medium text-slate-700 mb-3">Fugas detectadas:</p>
-                        <div class="flex radio-group">
-                            <input type="radio" id="fugas-si" name="fugas">
-                            <label for="fugas-si" class="flex-1 text-center text-sm">Sí</label>
-                            <input type="radio" id="fugas-no" name="fugas" checked>
-                            <label for="fugas-no" class="flex-1 text-center text-sm">No</label>
-                        </div>
-                    </div>
-
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <p class="text-sm font-medium text-slate-700 mb-3">Funcionamiento:</p>
-                        <div class="flex radio-group">
-                            <input type="radio" id="func-bien" name="funcionamiento" checked>
-                            <label for="func-bien" class="flex-1 text-center text-sm">Bien</label>
-                            <input type="radio" id="func-mal" name="funcionamiento">
-                            <label for="func-mal" class="flex-1 text-center text-sm">Mal</label>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia Fotográfica</h3>
-                <button class="w-full bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-4 text-slate-400 hover:text-slate-600 font-bold text-sm flex items-center justify-center gap-2 transition group mb-8">
-                    <i class="fas fa-camera text-lg group-hover:scale-110 transition"></i>
-                    <span>Agregar Foto</span>
-                    <span class="text-xs font-normal opacity-60">(máx. 5)</span>
-                </button>
-
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Notas del Técnico</h3>
-                <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none shadow-sm" placeholder="Observaciones sobre este paso..."></textarea>
-            </div>
-
-            <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
-                <button onclick="goTo('step6')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
-                <button onclick="goTo('step8')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
-                    Siguiente Paso <i class="fas fa-chevron-right text-xs"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- PASO 8: BOMBAS -->
-        <div id="step8" class="screen bg-slate-50">
-            <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 8 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">80% completado</span>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 5 de 7</span>
+                    <span class="text-xs font-bold text-slate-400">71% completado</span>
                 </div>
                 <h2 class="text-xl font-bold text-slate-800 mt-3">Bombas</h2>
                 <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[80%] rounded-full relative"></div>
+                    <div class="h-full bg-orange-500 w-[71%] rounded-full relative"></div>
                 </div>
             </div>
 
@@ -822,62 +869,64 @@
             </div>
 
             <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
-                <button onclick="goTo('step7')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
+                <button onclick="goTo('step4')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
-                <button onclick="goTo('step9')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+                <button onclick="goTo('step6')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
                     Siguiente Paso <i class="fas fa-chevron-right text-xs"></i>
                 </button>
             </div>
         </div>
 
-        <!-- PASO 9: MOTOR, TRANSFORMADOR, MANÓMETRO, BOMBA AGUA -->
-        <div id="step9" class="screen bg-slate-50">
+        <!-- PASO 6: COMPONENTES ADICIONALES -->
+        <div id="step6" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 9 de 10</span>
-                    <span class="text-xs font-bold text-slate-400">90% completado</span>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 6 de 7</span>
+                    <span class="text-xs font-bold text-slate-400">86% completado</span>
                 </div>
                 <h2 class="text-xl font-bold text-slate-800 mt-3">Componentes Adicionales</h2>
                 <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-                    <div class="h-full bg-orange-500 w-[90%] rounded-full relative"></div>
+                    <div class="h-full bg-orange-500 w-[86%] rounded-full relative"></div>
                 </div>
             </div>
 
             <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Motor Agitador y Condensador</h3>
-                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-6">
-                    <p class="text-sm font-medium text-slate-700 mb-3">Condición del aspa:</p>
-                    <div class="flex radio-group">
-                        <input type="radio" id="aspa-buena" name="aspa" checked>
-                        <label for="aspa-buena" class="flex-1 text-center text-sm">Buena</label>
-                        <input type="radio" id="aspa-mala" name="aspa">
-                        <label for="aspa-mala" class="flex-1 text-center text-sm">Mala</label>
-                    </div>
-                </div>
-
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Transformador</h3>
-                <div class="space-y-3 mb-6">
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Voltaje salida</label>
-                        <input type="text" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Ej: 12V">
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Voltaje general</label>
-                        <input type="text" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Ej: 127V">
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <p class="text-sm font-medium text-slate-700 mb-3">Cableado y terminales:</p>
-                        <div class="flex radio-group">
-                            <input type="radio" id="cable-bien" name="cableado" checked>
-                            <label for="cable-bien" class="flex-1 text-center text-sm">Bien</label>
-                            <input type="radio" id="cable-mal" name="cableado">
-                            <label for="cable-mal" class="flex-1 text-center text-sm">Mal</label>
+                <!-- CARBONATADOR CON "APLICA" -->
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Carbonatador</h3>
+                <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-4 mb-4">
+                    <label class="flex items-start gap-3 cursor-pointer mb-4">
+                        <input type="checkbox" id="carbonatador-no-aplica" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-orange-300 focus:ring-orange-500 cursor-pointer" onchange="document.getElementById('carbonatador-content').style.opacity = this.checked ? '0.4' : '1'; document.getElementById('carbonatador-content').style.pointerEvents = this.checked ? 'none' : 'auto';">
+                        <div>
+                            <span class="text-sm font-bold text-orange-800 block">No Aplica</span>
+                            <span class="text-xs text-orange-600">Marcar si el equipo no cuenta con carbonatador</span>
+                        </div>
+                    </label>
+                    
+                    <div id="carbonatador-content" class="space-y-3 transition-opacity duration-300">
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                            <p class="text-sm font-medium text-slate-700 mb-3">Fugas detectadas:</p>
+                            <div class="flex radio-group">
+                                <input type="radio" id="fugas-si" name="fugas">
+                                <label for="fugas-si" class="flex-1 text-center text-sm">Sí</label>
+                                <input type="radio" id="fugas-no" name="fugas" checked>
+                                <label for="fugas-no" class="flex-1 text-center text-sm">No</label>
+                            </div>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                            <p class="text-sm font-medium text-slate-700 mb-3">Funcionamiento:</p>
+                            <div class="flex radio-group">
+                                <input type="radio" id="func-bien" name="funcionamiento" checked>
+                                <label for="func-bien" class="flex-1 text-center text-sm">Bien</label>
+                                <input type="radio" id="func-mal" name="funcionamiento">
+                                <label for="func-mal" class="flex-1 text-center text-sm">Mal</label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- MANÓMETRO (SIN CAMBIOS) -->
                 <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Manómetro</h3>
                 <div class="space-y-3 mb-6">
                     <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
@@ -900,20 +949,55 @@
                     </div>
                 </div>
 
+                <!-- BOMBA DE AGUA CON "APLICA" -->
                 <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Bomba de Agua</h3>
-                <div class="space-y-3 mb-8">
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <p class="text-sm font-medium text-slate-700 mb-3">Funciona:</p>
-                        <div class="flex radio-group">
-                            <input type="radio" id="bomba-bien" name="bomba-agua" checked>
-                            <label for="bomba-bien" class="flex-1 text-center text-sm">Bien</label>
-                            <input type="radio" id="bomba-mal" name="bomba-agua">
-                            <label for="bomba-mal" class="flex-1 text-center text-sm">Mal</label>
+                <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-4 mb-6">
+                    <label class="flex items-start gap-3 cursor-pointer mb-4">
+                        <input type="checkbox" id="bomba-agua-no-aplica" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-orange-300 focus:ring-orange-500 cursor-pointer" onchange="document.getElementById('bomba-agua-content').style.opacity = this.checked ? '0.4' : '1'; document.getElementById('bomba-agua-content').style.pointerEvents = this.checked ? 'none' : 'auto';">
+                        <div>
+                            <span class="text-sm font-bold text-orange-800 block">No Aplica</span>
+                            <span class="text-xs text-orange-600">Marcar si el equipo no cuenta con bomba de agua</span>
+                        </div>
+                    </label>
+                    
+                    <div id="bomba-agua-content" class="space-y-3 transition-opacity duration-300">
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                            <p class="text-sm font-medium text-slate-700 mb-3">Funciona:</p>
+                            <div class="flex radio-group">
+                                <input type="radio" id="bomba-bien" name="bomba-agua" checked>
+                                <label for="bomba-bien" class="flex-1 text-center text-sm">Bien</label>
+                                <input type="radio" id="bomba-mal" name="bomba-agua">
+                                <label for="bomba-mal" class="flex-1 text-center text-sm">Mal</label>
+                            </div>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Revisión de agua y adecuado</label>
+                            <input type="text" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Descripción">
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Revisión de agua y adecuado</label>
-                        <input type="text" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500" placeholder="Descripción">
+                </div>
+
+                <!-- COMPRESOR DE AIRE CON "APLICA" (NUEVO) -->
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Compresor de Aire</h3>
+                <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-4 mb-6">
+                    <label class="flex items-start gap-3 cursor-pointer mb-4">
+                        <input type="checkbox" id="compresor-aire-no-aplica" class="mt-0.5 w-5 h-5 text-orange-500 rounded border-orange-300 focus:ring-orange-500 cursor-pointer" onchange="document.getElementById('compresor-aire-content').style.opacity = this.checked ? '0.4' : '1'; document.getElementById('compresor-aire-content').style.pointerEvents = this.checked ? 'none' : 'auto';">
+                        <div>
+                            <span class="text-sm font-bold text-orange-800 block">No Aplica</span>
+                            <span class="text-xs text-orange-600">Marcar si el equipo no cuenta con compresor de aire</span>
+                        </div>
+                    </label>
+                    
+                    <div id="compresor-aire-content" class="transition-opacity duration-300">
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                            <p class="text-sm font-medium text-slate-700 mb-3">Estado del compresor:</p>
+                            <div class="flex radio-group">
+                                <input type="radio" id="compresor-bien" name="compresor-aire" checked>
+                                <label for="compresor-bien" class="flex-1 text-center text-sm">Bien</label>
+                                <input type="radio" id="compresor-mal" name="compresor-aire">
+                                <label for="compresor-mal" class="flex-1 text-center text-sm">Mal</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -929,21 +1013,21 @@
             </div>
 
             <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
-                <button onclick="goTo('step8')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
+                <button onclick="goTo('step5')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
-                <button onclick="goTo('step10')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+                <button onclick="goTo('step7')" class="flex-[2] btn-primary py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
                     Siguiente Paso <i class="fas fa-chevron-right text-xs"></i>
                 </button>
             </div>
         </div>
 
-        <!-- PASO 10: CALIBRACIÓN DE VÁLVULAS (TABLA) -->
-        <div id="step10" class="screen bg-slate-50">
+        <!-- PASO 7: CALIBRACIÓN DE VÁLVULAS (TABLA) -->
+        <div id="step7" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 10 de 10</span>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Paso 7 de 7</span>
                     <span class="text-xs font-bold text-slate-400">100% completado</span>
                 </div>
                 <h2 class="text-xl font-bold text-slate-800 mt-3">Calibración de Válvulas</h2>
@@ -953,88 +1037,150 @@
             </div>
 
             <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Tabla de Calibración</h3>
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Registro de Válvulas (8 válvulas)</h3>
                 
-                <!-- TABLA DE CALIBRACIÓN -->
+                <!-- TABLA DE VÁLVULAS -->
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-8">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-xs">
-                            <thead class="bg-orange-50 border-b border-slate-200">
-                                <tr>
-                                    <th class="p-3 text-left font-bold text-slate-700">Válvula</th>
-                                    <th class="p-3 text-center font-bold text-slate-700">Presión<br/>(PSI)</th>
-                                    <th class="p-3 text-center font-bold text-slate-700">Temp<br/>(°C)</th>
-                                    <th class="p-3 text-center font-bold text-slate-700">Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-3 font-medium text-slate-700">Válvula 1</td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="30">
-                                    </td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="3">
-                                    </td>
-                                    <td class="p-2">
-                                        <select class="w-full border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50">
-                                            <option value="ok">OK</option>
-                                            <option value="ajustado">Ajustado</option>
-                                            <option value="falla">Falla</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-3 font-medium text-slate-700">Válvula 2</td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="30">
-                                    </td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="3">
-                                    </td>
-                                    <td class="p-2">
-                                        <select class="w-full border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50">
-                                            <option value="ok">OK</option>
-                                            <option value="ajustado">Ajustado</option>
-                                            <option value="falla">Falla</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-3 font-medium text-slate-700">Válvula 3</td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="30">
-                                    </td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="3">
-                                    </td>
-                                    <td class="p-2">
-                                        <select class="w-full border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50">
-                                            <option value="ok">OK</option>
-                                            <option value="ajustado">Ajustado</option>
-                                            <option value="falla">Falla</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-3 font-medium text-slate-700">Válvula 4</td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="30">
-                                    </td>
-                                    <td class="p-2">
-                                        <input type="number" class="w-full border border-slate-300 rounded px-2 py-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="3">
-                                    </td>
-                                    <td class="p-2">
-                                        <select class="w-full border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50">
-                                            <option value="ok">OK</option>
-                                            <option value="ajustado">Ajustado</option>
-                                            <option value="falla">Falla</option>
-                                        </select>
-                                    </td>
-                                </tr>
+                    <table class="w-full text-sm">
+                        <thead class="bg-orange-50 border-b border-slate-200">
+                            <tr>
+                                <th class="py-2 px-1 text-left font-bold text-slate-700 text-xs">V</th>
+                                <th class="py-2 px-1 text-left font-bold text-slate-700 text-xs">Producto</th>
+                                <th class="py-2 px-1 text-center font-bold text-slate-700 text-xs">Caducidad</th>
+                                <th class="py-2 px-1 text-center font-bold text-slate-700 text-xs">A-J</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">1</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">2</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">3</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">4</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">5</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">6</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">7</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-2 px-1 font-bold text-slate-700 text-sm">8</td>
+                                <td class="py-1.5 px-1">
+                                    <input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50" placeholder="Limón" style="max-width: 110px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <input type="date" class="w-full border border-slate-300 rounded px-1 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50" style="max-width: 95px;">
+                                </td>
+                                <td class="py-1.5 px-1">
+                                    <select class="w-full border border-slate-300 rounded px-1 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 bg-white" style="max-width: 60px;">
+                                        <option value="">--</option>
+                                        <option value="ok">OK</option>
+                                        <option value="mal">MAL</option>
+                                    </select>
+                                </td>
+                            </tr>
                             </tbody>
-                        </table>
-                    </div>
+                    </table>
                 </div>
 
                 <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia Fotográfica</h3>
@@ -1049,7 +1195,7 @@
             </div>
 
             <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
-                <button onclick="goTo('step9')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
+                <button onclick="goTo('step6')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al paso anterior">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
@@ -1113,7 +1259,10 @@
         </div>
 
         <div id="signature" class="screen bg-white flex flex-col">
-            <div class="pt-12 px-6 pb-6">
+            <div class="pt-12 px-6 pb-6 relative">
+                <button onclick="goTo('step7')" class="absolute top-4 left-4 h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-slate-600 shadow-sm" aria-label="Volver al paso anterior">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
                 <h2 class="text-2xl font-bold text-slate-800 mb-1">Finalizar Servicio</h2>
                 <p class="text-sm text-slate-500">Solicita la firma del responsable.</p>
             </div>
@@ -1149,7 +1298,7 @@
                     <i class="fas fa-check-circle"></i> Finalizar y Enviar
                 </button>
                 
-                <button onclick="goTo('step10')" class="w-full py-4 text-slate-400 text-sm font-medium hover:text-slate-600 transition mt-2">Cancelar y volver</button>
+                <button onclick="goTo('step7')" class="w-full py-4 text-slate-400 text-sm font-medium hover:text-slate-600 transition mt-2">Cancelar y volver</button>
             </div>
         </div>
 

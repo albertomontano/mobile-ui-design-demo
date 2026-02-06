@@ -54,17 +54,18 @@ Herramientas:
 ```
 c:\mobile-ui-design-demo\
 │
-├── 📄 calibeb_demo.html              (507 líneas)
-│   └── Estructura principal de la app con 8 pantallas
+├── 📄 calibeb_demo.html              (1148 líneas)
+│   └── Estructura principal de la app con 16 pantallas
+│       (incluye 3 pantallas de verificación QR)
 │
-├── 🎨 styles.css                     (697 líneas)
+├── 🎨 styles.css                     (696 líneas)
 │   ├── Design Tokens (47 variables CSS)
 │   ├── Mobile Frame Styles
 │   ├── Component Styles
 │   ├── Utility Classes
 │   └── Accessibility Styles
 │
-├── 🧠 app.js                         (720 líneas)
+├── 🧠 app.js                         (717 líneas)
 │   ├── NavigationController
 │   ├── DashboardManager
 │   ├── FormManager
@@ -74,12 +75,12 @@ c:\mobile-ui-design-demo\
 │   ├── NotificationManager
 │   └── Initialization Logic
 │
-├── 🧩 components.js                  (474 líneas)
+├── 🧩 components.js                  (383 líneas)
 │   ├── 13 Component Functions
 │   ├── RenderUtils
 │   └── Templates
 │
-├── 💾 mock-data.js                   (536 líneas)
+├── 💾 mock-data.js                   (440 líneas)
 │   ├── AppData Object
 │   └── DataService API
 │
@@ -89,7 +90,7 @@ c:\mobile-ui-design-demo\
     └── DOCUMENTACION_TECNICA.md (este archivo)
 ```
 
-**Total de código:** ~2,934 líneas
+**Total de código:** ~3,319 líneas
 
 ---
 
@@ -405,7 +406,7 @@ window.DataService = {
 ```
 1. HTML carga en navegador
 2. ↓
-3. Carga styles.css (697 líneas de estilos)
+3. Carga styles.css (696 líneas de estilos)
 4. ↓
 5. Carga mock-data.js → Inicializa window.DataService
 6. ↓
@@ -415,7 +416,7 @@ window.DataService = {
 10. ↓
 11. DOMContentLoaded → Ejecuta inicialización
     ├── DashboardManager.updateStats('today')
-    ├── initializeChecklists() → 3 pantallas
+    ├── initializeChecklists() → 7 pasos (checkin, step1-6)
     ├── initializePhotoButtons() → Auto-mapeo
     ├── setupEventListeners()
     └── initializeSignaturePad()
@@ -514,13 +515,18 @@ Actualiza UI del botón
    │ CHECKIN │
    └────┬────┘
         │
-        ↓ (Comenzar mantenimiento)
-   ┌───────┐     ┌───────┐     ┌───────────┐
-   │ STEP1 │ → → │ STEP2 │ → → │ SIGNATURE │
-   └───────┘     └───────┘     └───────────┘
-                                      │
-                                      ↓
-                                 DASHBOARD
+        ↓ (Comenzar mantenimiento - 7 pasos consolidados)
+   ┌───────┐   ┌───────┐   ┌───────┐   ┌───────┐   ┌───────┐   ┌───────┐   ┌───────┐
+   │ STEP1 │→→ │ STEP2 │→→ │ STEP3 │→→ │ STEP4 │→→ │ STEP5 │→→ │ STEP6 │→→ │ STEP7 │
+   └───────┘   └───────┘   └───────┘   └───────┘   └───────┘   └───────┘   └───────┘
+                                                                                  │
+                                                                                  ↓
+                                                                            ┌───────────┐
+                                                                            │ SIGNATURE │
+                                                                            └─────┬─────┘
+                                                                                  │
+                                                                                  ↓
+                                                                             DASHBOARD
 ```
 
 ### Detalle de Pantallas
@@ -570,9 +576,59 @@ Actualiza UI del botón
 - **Funcionalidad:** Verificación de válvulas
 - **Elementos clave:** Similar a STEP1
 - **Persistencia:** ✓ Checkboxes, ✓ Fotos
-- **Navegación:** → `signature`, ← `dashboard`
+- **Navegación:** → `step3`, ← `step1`
 
-#### 7. CORRECTIVE
+#### 7. STEP3 (Refrigeración Consolidada)
+- **ID:** `step3`
+- **Funcionalidad:** Unidad de refrigeración completa (consolidado con condensador, compresor y motores)
+- **Elementos clave:**
+  - Checkbox "No Aplica" que desactiva todo el paso
+  - Temperatura: Radio Bien/Mal (sin inputs numéricos)
+  - Limpieza de condensador
+  - Revisión componentes compresor
+  - Motor agitador: Bien/Mal
+  - Motor condensador: Bien/Mal
+- **Persistencia:** ✓ Checkboxes
+- **Navegación:** → `step4`, ← `step2`
+
+#### 8. STEP4 (Filtración y Desagüe)
+- **ID:** `step4`
+- **Funcionalidad:** Sistema de filtración y desagüe (fusionado)
+- **Elementos clave:**
+  - Filtración: Limpiar portafiltros, condición del filtro, fecha de vencimiento
+  - Desagüe: Charola de desagüe, mangueras
+- **Persistencia:** ✓ Checkboxes
+- **Navegación:** → `step5`, ← `step3`
+
+#### 9. STEP5 (Bombas)
+- **ID:** `step5`
+- **Funcionalidad:** Revisión de bombas
+- **Elementos clave:**
+  - Funciona: Bien/Mal
+  - Fijadas correctamente: Sí/No
+- **Persistencia:** ✓ Checkboxes
+- **Navegación:** → `step6`, ← `step4`
+
+#### 10. STEP6 (Componentes Adicionales)
+- **ID:** `step6`
+- **Funcionalidad:** Componentes opcionales con checkboxes "Aplica"
+- **Elementos clave:**
+  - Carbonatador (con "Aplica"): Fugas, funcionamiento
+  - Manómetro: Relojes, llave para tanques
+  - Bomba de agua (con "Aplica"): Funciona, revisión
+  - Compresor de aire (con "Aplica"): Estado
+- **Persistencia:** ✓ Checkboxes
+- **Navegación:** → `step7`, ← `step5`
+
+#### 11. STEP7 (Calibración)
+- **ID:** `step7`
+- **Funcionalidad:** Calibración de válvulas
+- **Elementos clave:**
+  - Tabla con 4 válvulas
+  - Inputs: Presión (PSI), Temperatura (°C), Estado (select)
+- **Navegación:** → `signature`, ← `step6`
+
+#### 12. CORRECTIVE
 - **ID:** `corrective`
 - **Funcionalidad:** Mantenimiento correctivo urgente
 - **Elementos clave:**
@@ -615,8 +671,13 @@ Actualiza UI del botón
 // Estado de checkboxes - Pantalla checkin
 "calibeb_checklist_checkin": [true, false, true, true]
 
-// Estado de checkboxes - Pantalla step1
+// Estado de checkboxes - Pasos 1-7
 "calibeb_checklist_step1": [true, true, false, true, false]
+"calibeb_checklist_step2": [false, true, true]
+"calibeb_checklist_step3": [true, false]  // Limpieza condensador, Revisión compresor
+"calibeb_checklist_step4": [true, false]  // Filtración, Desagüe
+"calibeb_checklist_step5": [true, true]   // Bombas
+"calibeb_checklist_step6": [...]          // Componentes adicionales
 
 // Estado de checkboxes - Pantalla step2
 "calibeb_checklist_step2": [false, true, true]
@@ -856,10 +917,10 @@ node --check mock-data.js
 | Métrica | Valor |
 |---------|-------|
 | **Archivos totales** | 7 |
-| **Líneas de código** | 2,934 |
+| **Líneas de código** | 3,319 |
 | **Managers** | 7 |
 | **Componentes** | 13 |
-| **Pantallas** | 8 |
+| **Pantallas** | 13 (login, dashboard, detail, checkin, step1-7, corrective, signature) |
 | **Design Tokens** | 47 |
 | **Funciones globales** | 3 |
 | **API endpoints (mock)** | 8 |

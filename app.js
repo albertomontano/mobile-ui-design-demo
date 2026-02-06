@@ -589,13 +589,13 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function initializeChecklists() {
     // Pantallas con checklists - ACTUALIZADO con todos los pasos
-    const checklistScreens = ['checkin', 'step1', 'step2', 'step4', 'step5', 'step6'];
+    const checklistScreens = ['checkin', 'step1', 'step2', 'step3', 'step4', 'step5', 'step6'];
     
     checklistScreens.forEach(screenId => {
         ChecklistManager.init(screenId);
     });
     
-    console.log('✓ Checklists inicializados con persistencia (10 pasos)');
+    console.log('✓ Checklists inicializados con persistencia (7 pasos consolidados)');
 }
 
 /**
@@ -703,6 +703,34 @@ window.goTo = (screenId) => NavigationController.goTo(screenId);
 window.goBack = () => NavigationController.goBack();
 window.updateDashboardStats = (range) => DashboardManager.updateStats(range);
 
+// ===== FUNCIONES PARA ESCANEO DE QR =====
+// Toggle para mostrar/ocultar campo de explicación cuando QR no está disponible
+window.toggleQRExplanation = (isChecked) => {
+    const explanationDiv = document.getElementById('qr-explanation');
+    if (explanationDiv) {
+        explanationDiv.style.display = isChecked ? 'block' : 'none';
+    }
+};
+
+// Validar QR y decidir a qué pantalla ir
+window.validateQR = () => {
+    const qrUnavailableCheckbox = document.getElementById('qr-unavailable-checkbox');
+    const isQRUnavailable = qrUnavailableCheckbox && qrUnavailableCheckbox.checked;
+    
+    if (isQRUnavailable) {
+        // Si QR no disponible, ir a pantalla de continuar sin QR
+        const explanationTextarea = document.querySelector('#qr-explanation textarea');
+        if (explanationTextarea && !explanationTextarea.value.trim()) {
+            alert('Por favor, proporciona una explicación de por qué el QR no está disponible.');
+            return;
+        }
+        NavigationController.goTo('qr-unavailable');
+    } else {
+        // Si QR está disponible (escaneado), ir a pantalla QR validado
+        NavigationController.goTo('qr-validated');
+    }
+};
+
 // Exportar módulos para uso en otros scripts
 window.CalibekApp = {
     Navigation: NavigationController,
@@ -715,3 +743,42 @@ window.CalibekApp = {
 };
 
 console.log('✓ API global de Calibek App expuesta');
+
+// Nueva función: Inicializar estado de checkboxes "No Aplica"
+function initializeNoAplicaCheckboxes() {
+    // Lista de todos los checkboxes "No Aplica" y sus contenidos asociados
+    const noAplicaCheckboxes = [
+        { checkboxId: 'step3-no-aplica', contentId: 'step3-content' },
+        { checkboxId: 'carbonatador-no-aplica', contentId: 'carbonatador-content' },
+        { checkboxId: 'bomba-agua-no-aplica', contentId: 'bomba-agua-content' },
+        { checkboxId: 'compresor-aire-no-aplica', contentId: 'compresor-aire-content' }
+    ];
+
+    noAplicaCheckboxes.forEach(({ checkboxId, contentId }) => {
+        const checkbox = document.getElementById(checkboxId);
+        const content = document.getElementById(contentId);
+        
+        if (checkbox && content) {
+            // Aplicar estado inicial basado en si está checked
+            if (checkbox.checked) {
+                content.style.opacity = '0.4';
+                content.style.pointerEvents = 'none';
+            } else {
+                content.style.opacity = '1';
+                content.style.pointerEvents = 'auto';
+            }
+        }
+    });
+
+    console.log('✓ Checkboxes "No Aplica" inicializados correctamente');
+}
+
+// Inicialización al cargar el DOM
+document.addEventListener('DOMContentLoaded', () => {
+    DashboardManager.updateStats('today');
+    initializeChecklists();
+    initializePhotoButtons();
+    setupEventListeners();
+    initializeSignaturePad();
+    initializeNoAplicaCheckboxes(); // Inicializar estado de "No Aplica"
+});

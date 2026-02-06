@@ -177,7 +177,7 @@ body {
 ### Funcionalidades Nuevas:
 - ✅ 1 sistema de firma digital
 - ✅ 1 sistema de captura de fotos
-- ✅ 3 pantallas con persistencia de checkboxes
+- ✅ 7 pasos con persistencia de checkboxes (consolidados)
 - ✅ 1 sistema de validación de formularios
 - ✅ 4 optimizaciones de CSS
 

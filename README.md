@@ -50,19 +50,16 @@
 - **Lista de órdenes:** Tarjetas clickeables con información detallada
 - **Acceso rápido:** Botón destacado para mantenimiento correctivo de emergencia
 
-### 🛠️ Flujo de Mantenimiento Preventivo (10 Pasos)
+### 🛠️ Flujo de Mantenimiento Preventivo (7 Pasos Consolidados)
 1. **Check-in GPS:** Validación de ubicación simulada con geolocalización
-2. **Paso 1 - Limpieza Exterior:** Verificación visual y checklist de limpieza
-3. **Paso 2 - Sistema de Válvulas:** Inspección de válvulas de dispensado
-4. **Paso 3 - Refrigeración:** Verificación de temperaturas y componentes
-5. **Paso 4 - Compresor:** Revisión de motor y conexiones eléctricas
-6. **Paso 5 - Filtración:** Inspección de filtros de agua y CO2
-7. **Paso 6 - Sistema de Desagüe:** Limpieza y verificación de drenajes
-8. **Paso 7 - Carbonatación:** Ajuste de presiones y prueba de calidad
-9. **Paso 8 - Bombas:** Revisión de bomba de agua y jarabe
-10. **Paso 9 - Componentes:** Verificación de tarjetas electrónicas
-11. **Paso 10 - Calibración:** Ajuste final de mezclas y prueba de sabor
-12. **Firma Digital:** Captura de firma del cliente con canvas interactivo
+2. **Paso 1 - Exterior:** Inspección visual, limpieza y estado de gabinete
+3. **Paso 2 - Válvulas:** Revisión de válvulas de producto y dispensado
+4. **Paso 3 - Refrigeración:** Unidad de refrigeración, temperatura, condensador, compresor y motores (con "No Aplica")
+5. **Paso 4 - Filtración y Desagüe:** Sistema de filtración de agua y sistema de drenaje (fusionado)
+6. **Paso 5 - Bombas:** Revisión de bombas de agua y jarabe
+7. **Paso 6 - Componentes Adicionales:** Carbonatador, manómetro, bomba de agua y compresor de aire (con checkboxes "Aplica")
+8. **Paso 7 - Calibración:** Ajuste final de válvulas, presiones y temperaturas
+9. **Firma Digital:** Captura de firma del cliente con canvas interactivo
 
 ### 🚨 Mantenimiento Correctivo
 - Flujo paralelo para atención de urgencias y fallas
@@ -162,11 +159,11 @@ Luego abrir: `http://localhost:8000/calibeb_demo.html`
 ```
 c:\mobile-ui-design-demo\
 │
-├── 📄 calibeb_demo.html          # Aplicación principal (507 líneas)
-├── 🎨 styles.css                 # Estilos globales (697 líneas)
-├── 🧠 app.js                     # Lógica de la app (720 líneas)
-├── 🧩 components.js              # Componentes reutilizables (474 líneas)
-├── 💾 mock-data.js               # Datos simulados (536 líneas)
+├── 📄 calibeb_demo.html          # Aplicación principal (1148 líneas)
+├── 🎨 styles.css                 # Estilos globales (696 líneas)
+├── 🧠 app.js                     # Lógica de la app (717 líneas)
+├── 🧩 components.js              # Componentes reutilizables (383 líneas)
+├── 💾 mock-data.js               # Datos simulados (440 líneas)
 │
 └── 📚 Documentación
     ├── README.md                 # Este archivo
@@ -175,7 +172,7 @@ c:\mobile-ui-design-demo\
     └── VERIFICACION_FINAL.md
 ```
 
-**Total:** 2,934 líneas de código
+**Total:** 3,319 líneas de código
 
 ---
 

@@ -80,7 +80,7 @@ Los IDs de las pantallas son **CRÍTICOS** para el sistema de navegación:
 <div id="dashboard" class="screen">...</div>
 <div id="detail" class="screen">...</div>
 <div id="checkin" class="screen">...</div>
-<!-- ... steps 1-10, signature, success, corrective -->
+<!-- ... steps 1-7 (consolidados), signature, success, corrective -->
 ```
 
 Si necesitas renombrar un ID, debes actualizar:
@@ -336,7 +336,7 @@ document.getElementById('nombre-pantalla') !== null
 - **NotificationManager:** Mensajes toast (línea ~480)
 - **API Global:** `window.goTo()` (línea ~702)
 
-### styles.css (697 líneas)
+### styles.css (696 líneas)
 - **Variables CSS:** Colores y dimensiones (línea ~10)
 - **Mobile Frame:** Simulador de iPhone (línea ~99)
 - **Pantallas:** Sistema de screens (línea ~128)
@@ -436,4 +436,4 @@ Si encuentras un bug o necesitas ayuda:
 ---
 
 **Última actualización:** Febrero 2026
-**Versión:** 4.0 (SPA Completa con 10 pasos)
+**Versión:** 5.0 (SPA Consolidada con 7 pasos optimizados - Feb 2026)

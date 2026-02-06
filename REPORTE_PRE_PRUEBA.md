@@ -69,7 +69,7 @@ Todos los IDs referenciados en JavaScript existen en el HTML:
 Verificadas y disponibles para el HTML:
 
 ```javascript
-✅ window.goTo(screenId)              // 19 usos en HTML
+✅ window.goTo(screenId)              // 40 usos en HTML
 ✅ window.goBack()                    // Disponible en API
 ✅ window.updateDashboardStats(range) // 1 uso en HTML
 ✅ window.CalibekApp                  // 7 managers expuestos
@@ -83,7 +83,7 @@ Verificadas y disponibles para el HTML:
 ### 4. ✅ BALANCE DE ETIQUETAS HTML
 
 ```
-Divs:  101 aperturas - 101 cierres = 0  ✅
+Divs:  189 aperturas - 189 cierres = 0  ✅
 Navs:  2 aperturas - 2 cierres = 0      ✅
 Forms: 1 apertura - 1 cierre = 0        ✅
 ```
@@ -116,8 +116,8 @@ Todos los archivos validados con `node --check`:
 
 ```
 ✅ app.js (718 líneas) - Sin errores
-✅ components.js (474 líneas) - Sin errores
-✅ mock-data.js (536 líneas) - Sin errores
+✅ components.js (383 líneas) - Sin errores
+✅ mock-data.js (440 líneas) - Sin errores
 ```
 
 **Resultado:** ✅ Sintaxis válida en todos los archivos
@@ -140,7 +140,7 @@ Verificados los siguientes listeners:
 **Inicialización en DOMContentLoaded:**
 ```javascript
 ✅ DashboardManager.updateStats('today')
-✅ initializeChecklists()      // 3 pantallas
+✅ initializeChecklists()      // 7 pasos consolidados
 ✅ initializePhotoButtons()    // Auto-mapeo
 ✅ setupEventListeners()
 ✅ initializeSignaturePad()
@@ -213,15 +213,15 @@ localStorage keys verificados:
 
 Sistema de navegación verificado:
 
-**19 rutas onclick en HTML:**
+**40 referencias goTo() en HTML (navegación y panel lateral):**
 ```html
 ✅ Login → Dashboard
 ✅ Dashboard → Detail
 ✅ Dashboard → Corrective
 ✅ Detail → Checkin
 ✅ Checkin → Step1
-✅ Step1 → Step2
-✅ Step2 → Signature
+✅ Step1 → Step2 → Step3 → Step4 → Step5 → Step6 → Step7
+✅ Step7 → Signature
 ✅ Corrective → Signature
 ✅ Signature → Dashboard
 ✅ Panel superior (8 botones de acceso directo)
@@ -435,7 +435,7 @@ Sistema de fotos verificado:
 
 2. **Flujo de prueba recomendado:**
    ```
-   Login → Dashboard → Detail → Checkin → Step1 → Step2 → Signature
+   Login → Dashboard → Detail → Checkin → Step1-7 (7 pasos consolidados) → Signature
    ```
 
 3. **Funcionalidades a probar:**

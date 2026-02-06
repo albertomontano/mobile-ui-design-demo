@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Mantenimiento - Calibeb</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; padding: 10px; line-height: 1.3; font-size: 11px; }
+        .report-container { max-width: 900px; margin: 0 auto; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 6px; }
+        
+        .report-header { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: white; padding: 16px 24px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .logo-section { display: flex; align-items: center; gap: 10px; }
+        .logo-section img { height: 45px; width: auto; }
+        .logo-section div h1 { font-size: 10px; color: #cbd5e1; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .folio-badge { background: #f97316; padding: 6px 12px; border-radius: 5px; }
+        .folio-badge .label { font-size: 8px; text-transform: uppercase; opacity: 0.9; }
+        .folio-badge .number { font-size: 16px; font-weight: 800; font-family: 'Courier New', monospace; }
+        .report-title { font-size: 18px; font-weight: 700; margin-bottom: 3px; }
+        .report-subtitle { font-size: 10px; color: #94a3b8; }
+        
+        .toolbar { background: #f8fafc; padding: 8px 24px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 6px; justify-content: flex-end; }
+        .btn { padding: 5px 12px; border: none; border-radius: 4px; font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-print { background: white; color: #64748b; border: 1px solid #e2e8f0; }
+        .btn-download { background: #f97316; color: white; }
+        
+        .report-content { padding: 16px 24px; }
+        .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .info-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 5px; padding: 10px; }
+        .info-card h3 { font-size: 9px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 3px; }
+        .info-card h3 i { color: #f97316; font-size: 10px; }
+        .info-row { display: flex; justify-content: space-between; padding: 3px 0; gap: 6px; }
+        .info-label { font-size: 10px; color: #64748b; font-weight: 500; }
+        .info-value { font-size: 10px; color: #1e293b; font-weight: 600; text-align: right; }
+        .type-badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 700; background: #dcfce7; color: #166534; }
+        
+        .section { margin-bottom: 16px; }
+        .section-header { background: #1e293b; color: white; padding: 6px 14px; border-radius: 5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .section-header i { color: #f97316; font-size: 13px; }
+        .section-title { font-size: 13px; font-weight: 700; }
+        
+        .step-card { background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+        .step-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f1f5f9; }
+        .step-number { background: #f97316; color: white; width: 20px; height: 20px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; }
+        .step-card-title { font-size: 13px; font-weight: 700; color: #1e293b; }
+        
+        .checklist { margin-bottom: 8px; }
+        .checklist-title { font-size: 9px; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 5px; }
+        .checklist-item { display: flex; align-items: center; gap: 6px; padding: 2px 0; font-size: 11px; color: #475569; }
+        .checklist-item i { color: #22c55e; font-size: 11px; }
+        
+        .status-group { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 6px 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .status-group-title { font-size: 10px; font-weight: 600; color: #475569; }
+        .status-value { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+        .status-bien { background: #dcfce7; color: #166534; }
+        
+        .photos-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 8px; }
+        .photo-placeholder { aspect-ratio: 4/3; background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 9px; font-weight: 600; flex-direction: column; }
+        .photo-placeholder i { font-size: 12px; margin-bottom: 2px; }
+        
+        .notes-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 4px; padding: 8px; margin-top: 6px; }
+        .notes-box .title { font-size: 9px; text-transform: uppercase; color: #92400e; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 3px; }
+        .notes-box .content { font-size: 10px; color: #78350f; line-height: 1.3; }
+        
+        .data-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 8px; }
+        .data-table th { background: #1e293b; color: white; padding: 5px 6px; text-align: left; font-weight: 700; font-size: 9px; text-transform: uppercase; }
+        .data-table td { padding: 5px 6px; border-bottom: 1px solid #e2e8f0; color: #475569; }
+        
+        .signature-section { margin-top: 16px; padding-top: 16px; border-top: 2px solid #e2e8f0; }
+        .sig-title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 12px; text-align: center; }
+        .sig-title i { color: #f97316; margin-right: 8px; }
+        .signature-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; text-align: center; margin-bottom: 10px; }
+        .signature-placeholder { width: 220px; height: 70px; margin: 0 auto 8px; background: white; border: 1px dashed #cbd5e1; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px; font-style: italic; }
+        .signature-name { font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+        .signature-role { font-size: 10px; color: #64748b; }
+        
+        .report-footer { background: #f8fafc; padding: 12px 24px; border-top: 1px solid #e2e8f0; text-align: center; }
+        .footer-info { font-size: 9px; color: #64748b; margin-bottom: 3px; }
+        .footer-email { font-size: 10px; color: #f97316; font-weight: 600; }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .toolbar { display: none; }
+            .report-container { box-shadow: none; }
+            .step-card { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- HEADER -->
+        <div class="report-header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="calibeb_logo-removebg-preview.png" alt="Calibeb Logo">
+                    <div><h1>Sistema de Gestión de Mantenimientos</h1></div>
+                </div>
+                <div class="folio-badge">
+                    <span class="label">Folio</span>
+                    <div class="number">#63252</div>
+                </div>
+            </div>
+            <div class="report-title">Reporte de Mantenimiento Técnico en Ruta</div>
+            <div class="report-subtitle">Orden: MNT-2026-123 • 06/Feb/2026</div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="toolbar">
+            <button class="btn btn-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
+            <button class="btn btn-download" onclick="window.print()"><i class="fas fa-download"></i> PDF</button>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="report-content">
+            <!-- INFO GENERAL -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3><i class="fas fa-clipboard-list"></i> Servicio</h3>
+                    <div class="info-row"><span class="info-label">OT</span><span class="info-value">MNT-2026-123</span></div>
+                    <div class="info-row"><span class="info-label">Técnico</span><span class="info-value">Miguel López</span></div>
+                    <div class="info-row"><span class="info-label">Tipo</span><span class="info-value"><span class="type-badge">Preventivo</span></span></div>
+                    <div class="info-row"><span class="info-label">Ruta</span><span class="info-value">R-05</span></div>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-building"></i> Cliente</h3>
+                    <div class="info-row"><span class="info-label">Planta</span><span class="info-value">Aptiv Planta 5</span></div>
+                    <div class="info-row"><span class="info-label">Fecha</span><span class="info-value">06 Feb 2026</span></div>
+                    <div class="info-row"><span class="info-label">Llegada</span><span class="info-value">09:00 AM</span></div>
+                    <div class="info-row"><span class="info-label">Fin</span><span class="info-value">10:30 AM</span></div>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-cog"></i> Equipo</h3>
+                    <div class="info-row"><span class="info-label">Tipo</span><span class="info-value">Disp. Crathco</span></div>
+                    <div class="info-row"><span class="info-label">Serie</span><span class="info-value">CRATH-00845</span></div>
+                    <div class="info-row"><span class="info-label">Modelo</span><span class="info-value">G-Cool 3S</span></div>
+                    <div class="info-row"><span class="info-label">QR</span><span class="info-value">DISP-2024-45</span></div>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-chart-line"></i> Resumen</h3>
+                    <div class="info-row"><span class="info-label">Pasos</span><span class="info-value">7/7</span></div>
+                    <div class="info-row"><span class="info-label">Tiempo</span><span class="info-value">1h 30min</span></div>
+                    <div class="info-row"><span class="info-label">Estado</span><span class="info-value"><span class="status-bien">Exitoso</span></span></div>
+                    <div class="info-row"><span class="info-label">Fotos</span><span class="info-value">12</span></div>
+                </div>
+            </div>
+
+            <!-- PASOS -->
+            <div class="section">
+                <div class="section-header">
+                    <i class="fas fa-tasks"></i>
+                    <span class="section-title">Detalle de Actividades</span>
+                </div>
+
+                <!-- PASO 1 -->
+                <div class="step-card">
+                    <div class="step-card-header"><span class="step-number">1</span><h3 class="step-card-title">Exterior de Máquina</h3></div>
+                    <div class="checklist">
+                        <div class="checklist-title">Verificación</div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpiar parte superior</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpiar costados</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpiar parte trasera</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpieza base y patas</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Revisión clavija y tomacorriente</span></div>
+                    </div>
+                    <div class="status-group"><span class="status-group-title">Tapa de válvulas:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="status-group"><span class="status-group-title">Etiquetas:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="checklist-title">Fotos</div>
+                    <div class="photos-grid">
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 1</div>
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 2</div>
+                    </div>
+                    <div class="notes-box"><div class="title"><i class="fas fa-sticky-note"></i> Notas</div><div class="content">Limpieza general realizada. Sin daños detectados.</div></div>
+                </div>
+
+                <!-- PASO 2 -->
+                <div class="step-card">
+                    <div class="step-card-header"><span class="step-number">2</span><h3 class="step-card-title">Válvulas</h3></div>
+                    <div class="checklist">
+                        <div class="checklist-title">Verificación</div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpieza boquillas y difusor</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpieza ranura interna</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Revisión de micros</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Estado de bobinas</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Revisión de palancas</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Lavado de cuerpo de válvulas</span></div>
+                    </div>
+                    <div class="checklist-title">Fotos</div>
+                    <div class="photos-grid">
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 1</div>
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 2</div>
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 3</div>
+                    </div>
+                    <div class="notes-box"><div class="title"><i class="fas fa-sticky-note"></i> Notas</div><div class="content">Válvulas operando correctamente. Limpieza profunda realizada.</div></div>
+                </div>
+
+                <!-- PASO 3 -->
+                <div class="step-card">
+                    <div class="step-card-header"><span class="step-number">3</span><h3 class="step-card-title">Unidad de Refrigeración</h3></div>
+                    <div class="status-group"><span class="status-group-title">Temperatura:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="checklist">
+                        <div class="checklist-title">Condensador</div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpieza con aire</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Revisión motor</span></div>
+                    </div>
+                    <div class="status-group"><span class="status-group-title">Compresor:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="status-group"><span class="status-group-title">Evaporador:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="checklist-title">Fotos</div>
+                    <div class="photos-grid">
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 1</div>
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 2</div>
+                    </div>
+                    <div class="notes-box"><div class="title"><i class="fas fa-sticky-note"></i> Notas</div><div class="content">Sistema de refrigeración dentro de parámetros normales.</div></div>
+                </div>
+
+                <!-- PASO 4 -->
+                <div class="step-card">
+                    <div class="step-card-header"><span class="step-number">4</span><h3 class="step-card-title">Filtración y Desagüe</h3></div>
+                    <div class="checklist">
+                        <div class="checklist-title">Filtración</div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpiar Portafiltros</span></div>
+                    </div>
+                    <div class="status-group"><span class="status-group-title">Filtro:</span><span class="status-value status-bien">Buena</span></div>
+                    <div class="status-group"><span class="status-group-title">Vencimiento:</span><span class="status-value status-bien">15/Ago/2026</span></div>
+                    <div class="checklist">
+                        <div class="checklist-title">Desagüe</div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Limpieza charola</span></div>
+                    </div>
+                    <div class="status-group"><span class="status-group-title">Mangueras:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="checklist-title">Fotos</div>
+                    <div class="photos-grid">
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 1</div>
+                    </div>
+                    <div class="notes-box"><div class="title"><i class="fas fa-sticky-note"></i> Notas</div><div class="content">Filtro en condiciones óptimas. Sin obstrucciones.</div></div>
+                </div>
+
+                <!-- PASO 5 -->
+                <div class="step-card">
+                    <div class="step-card-header"><span class="step-number">5</span><h3 class="step-card-title">Tanques</h3></div>
+                    <div class="checklist">
+                        <div class="checklist-title">Verificación</div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Desmontaje de tapa y agitador</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Lavado con jabón y agua</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Desinfección con sanitizante</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Remojo 5-10 minutos</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Enjuague con agua potable</span></div>
+                        <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Montaje de componentes</span></div>
+                    </div>
+                    <div class="status-group"><span class="status-group-title">Agitadores:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="status-group"><span class="status-group-title">Fugas:</span><span class="status-value status-bien">No</span></div>
+                    <div class="checklist-title">Fotos</div>
+                    <div class="photos-grid">
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 1</div>
+                        <div class="photo-placeholder"><i class="fas fa-camera"></i>Foto 2</div>
+                    </div>
+                    <div class="notes-box"><div class="title"><i class="fas fa-sticky-note"></i> Notas</div><div class="content">Lavado y sanitización completado según protocolo.</div></div>
+                </div>
+
+                <!-- PASO 6 -->
+                <div class="step-card">
+                    <div class="step-card-header"><span class="step-number">6</span><h3 class="step-card-title">Componentes Adicionales</h3></div>
+                    <div class="checklist-title">Carbonatador</div>
+                    <div class="status-group"><span class="status-group-title">Fugas:</span><span class="status-value status-bien">No</span></div>
+                    <div class="status-group"><span class="status-group-title">Funcionamiento:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="checklist-title">Manómetro</div>
+                    <div class="status-group"><span class="status-group-title">Relojes:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="status-group"><span class="status-group-title">Llave tanques:</span><span class="status-value status-bien">Sí</span></div>
+                    <div class="checklist-title">Bomba de Agua</div>
+                    <div class="status-group"><span class="status-group-title">Funciona:</span><span class="status-value status-bien">Bien</span></div>
+                    <div class="notes-box"><div class="title"><i class="fas fa-sticky-note"></i> Notas</div><div class="content">Todos los componentes dentro de parámetros normales.</div></div>
+                </div>
+
+                <!-- PASO 7 -->
+                <div class="step-card">
+                    <div class="step-card-header"><span class="step-number">7</span><h3 class="step-card-title">Llenado de Tanques</h3></div>
+                    <div class="checklist-title">Productos por Válvula</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>V</th><th>Producto</th><th>Caducidad</th><th>A-J</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>Limón</td><td>15/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                            <tr><td>2</td><td>Naranja</td><td>15/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                            <tr><td>3</td><td>Fresa</td><td>15/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                            <tr><td>4</td><td>Mango</td><td>20/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                            <tr><td>5</td><td>Jamaica</td><td>20/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                            <tr><td>6</td><td>Tamarindo</td><td>20/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                            <tr><td>7</td><td>Piña</td><td>25/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                            <tr><td>8</td><td>Guayaba</td><td>25/08/26</td><td><span class="status-bien">OK</span></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="notes-box"><div class="title"><i class="fas fa-sticky-note"></i> Notas</div><div class="content">Llenado de 8 válvulas completado. Relaciones agua-jarabe verificadas.</div></div>
+                </div>
+            </div>
+
+            <!-- FIRMA -->
+            <div class="signature-section">
+                <h3 class="sig-title"><i class="fas fa-file-signature"></i>Firma y Conformidad del Cliente</h3>
+                <div class="signature-box">
+                    <div class="signature-placeholder"><span>Firma Digital Capturada</span></div>
+                    <div class="signature-name">Carlos Ramírez Gutiérrez</div>
+                    <div class="signature-role">Supervisor - Aptiv Planta 5</div>
+                </div>
+                <div class="info-card" style="max-width: 600px; margin: 0 auto;">
+                    <h3><i class="fas fa-envelope"></i> Distribución</h3>
+                    <div class="info-row"><span class="info-label">Enviado a:</span><span class="info-value footer-email">cramirez@aptiv.com</span></div>
+                    <div class="info-row"><span class="info-label">Fecha:</span><span class="info-value">06/Feb/2026 - 10:45 AM</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="report-footer">
+            <div class="footer-info">Sistema Calibeb - Gestión de Mantenimientos en Ruta</div>
+            <div class="footer-info">© 2026 Calibeb | Folio: #63252 | Orden: MNT-2026-123 | Técnico: Miguel López</div>
+        </div>
+    </div>
+</body>
+</html>
