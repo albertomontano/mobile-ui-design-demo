@@ -782,3 +782,46 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeSignaturePad();
     initializeNoAplicaCheckboxes(); // Inicializar estado de "No Aplica"
 });
+
+// ===== FUNCIONES PARA FLUJO CORRECTIVO =====
+
+/**
+ * Validar QR en flujo correctivo
+ * Determina si el usuario escaneó QR o marcó "no disponible"
+ */
+window.validateCorrectiveQR = function() {
+    const checkbox = document.getElementById('corrective-qr-unavailable-checkbox');
+    const explanationText = document.getElementById('corrective-qr-explanation-text');
+    
+    if (checkbox && checkbox.checked) {
+        // Usuario marca que QR no disponible
+        const explanation = explanationText ? explanationText.value.trim() : '';
+        
+        if (explanation === '' || explanation.length < 5) {
+            alert('Por favor, proporciona una explicación del por qué el QR no está disponible (mínimo 5 caracteres).');
+            return;
+        }
+        
+        // Guardar explicación para mostrar en siguiente pantalla
+        const displayElement = document.getElementById('corrective-explanation-display');
+        if (displayElement) {
+            displayElement.textContent = `"${explanation}"`;
+        }
+        
+        goTo('corrective-qr-unavailable');
+    } else {
+        // QR escaneado exitosamente (simulado)
+        goTo('corrective-qr-validated');
+    }
+};
+
+/**
+ * Toggle para mostrar/ocultar textarea de explicación en flujo correctivo
+ * @param {boolean} checked - Estado del checkbox
+ */
+window.toggleCorrectiveQRExplanation = function(checked) {
+    const explanation = document.getElementById('corrective-qr-explanation');
+    if (explanation) {
+        explanation.style.display = checked ? 'block' : 'none';
+    }
+};

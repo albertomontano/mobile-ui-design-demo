@@ -44,7 +44,8 @@
             <button onclick="goTo('success')" class="text-xs bg-emerald-50 hover:bg-emerald-100 p-2 rounded text-left text-emerald-700">✓ Éxito</button>
             
             <!-- Flujo alternativo: Mantenimiento correctivo -->
-            <button onclick="goTo('corrective')" class="text-xs bg-orange-100 text-orange-700 hover:bg-orange-200 p-2 rounded text-left font-bold">Correctivo</button>
+            <button onclick="goTo('corrective-qr-scan')" class="text-xs bg-red-100 text-red-700 hover:bg-red-200 p-2 rounded text-left font-bold">Correctivo QR</button>
+            <button onclick="goTo('corrective-form')" class="text-xs bg-orange-100 text-orange-700 hover:bg-orange-200 p-2 rounded text-left font-bold">Correctivo Form</button>
         </div>
         
         <p class="text-[10px] text-slate-500 bg-slate-100 p-2 rounded">
@@ -143,7 +144,7 @@
 
             <div class="px-5 py-6 flex-1 overflow-y-auto no-scrollbar pb-24">
                 
-                <button onclick="goTo('corrective')" class="w-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 p-4 rounded-xl font-bold shadow-sm flex items-center justify-center gap-3 mb-6 transition group" aria-label="Crear nuevo mantenimiento correctivo">
+                <button onclick="goTo('corrective-qr-scan')" class="w-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 p-4 rounded-xl font-bold shadow-sm flex items-center justify-center gap-3 mb-6 transition group" aria-label="Crear nuevo mantenimiento correctivo">
                     <div class="h-10 w-10 bg-red-100 rounded-full flex items-center justify-center group-hover:bg-red-200 transition">
                         <i class="fas fa-wrench text-red-500"></i>
                     </div>
@@ -173,7 +174,7 @@
                 
                 <div class="space-y-3">
                     <!-- URGENTE - Marco Rojo -->
-                    <div onclick="goTo('detail')" class="bg-white p-4 rounded-xl shadow-sm border-2 border-red-500 border-l-4 border-l-red-600 active:bg-slate-50 transition cursor-pointer relative overflow-hidden">
+                    <div onclick="goTo('corrective-qr-scan')" class="bg-white p-4 rounded-xl shadow-sm border-2 border-red-500 border-l-4 border-l-red-600 active:bg-slate-50 transition cursor-pointer relative overflow-hidden">
                         <div class="flex justify-between items-start mb-1">
                             <span class="text-xs font-bold text-slate-400">MNT-2026-125</span>
                             <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">URGENTE</span>
@@ -216,7 +217,7 @@
                         <!-- Mantenimientos agrupados -->
                         <div class="divide-y divide-slate-200">
                             <!-- Mantenimiento 1 - MNT-2026-123 -->
-                            <div onclick="goTo('detail')" class="bg-white p-4 hover:bg-slate-50 active:bg-slate-100 transition cursor-pointer border-l-4 border-l-orange-500">
+                            <div onclick="goTo('corrective-qr-scan')" class="bg-white p-4 hover:bg-slate-50 active:bg-slate-100 transition cursor-pointer border-l-4 border-l-orange-500">
                                 <div class="flex justify-between items-start mb-1">
                                     <span class="text-xs font-bold text-slate-400">MNT-2026-123</span>
                                     <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">PENDIENTE</span>
@@ -1269,7 +1270,169 @@
             </div>
         </div>
 
-        <div id="corrective" class="screen bg-slate-50">
+        <!-- ============================================
+             FLUJO DE MANTENIMIENTO CORRECTIVO
+             ============================================ -->
+
+        <!-- PANTALLA: ESCANEO DE QR - CORRECTIVO -->
+        <div id="corrective-qr-scan" class="screen bg-slate-50">
+            <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
+                <div class="flex items-center gap-4 mb-2">
+                    <button onclick="goTo('dashboard')" class="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-slate-600">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-slate-800">Escaneo de QR</h2>
+                </div>
+                <p class="text-sm text-red-600 font-medium"><i class="fas fa-wrench mr-1"></i> Mantenimiento Correctivo</p>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
+                <div class="bg-white border-2 border-dashed border-red-300 rounded-xl p-8 mb-6 flex flex-col items-center justify-center min-h-[300px]">
+                    <div class="w-32 h-32 bg-red-50 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-qrcode text-red-400 text-6xl"></i>
+                    </div>
+                    <p class="text-slate-600 text-center text-sm mb-4">Escanea el código QR de la máquina</p>
+                    <button class="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center gap-2">
+                        <i class="fas fa-camera"></i> Abrir Cámara
+                    </button>
+                </div>
+
+                <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="corrective-qr-unavailable-checkbox" onchange="toggleCorrectiveQRExplanation(this.checked)" class="mt-0.5 w-5 h-5 text-red-500 rounded border-slate-300 focus:ring-red-500 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 leading-tight">QR no disponible</span>
+                    </label>
+                </div>
+
+                <div id="corrective-qr-explanation" style="display: none;">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Explicación <span class="text-red-500">*</span></label>
+                    <textarea id="corrective-qr-explanation-text" class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 resize-none shadow-sm" placeholder="Ej. QR dañado, roto, o no visible"></textarea>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
+                <button onclick="validateCorrectiveQR()" class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99]">
+                    Validar y Continuar
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA: QR VALIDADO - CORRECTIVO -->
+        <div id="corrective-qr-validated" class="screen bg-white relative">
+            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-green-50 to-white">
+                
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6 relative">
+                    <div class="absolute inset-0 rounded-full border-4 border-green-500 opacity-25 animate-ping"></div>
+                    <i class="fas fa-qrcode text-green-600 text-4xl"></i>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">QR Validado</h2>
+                <p class="text-slate-500 text-center mb-2 text-sm max-w-[280px]">El código QR ha sido verificado correctamente.</p>
+                <p class="text-red-600 text-center mb-8 text-xs font-medium"><i class="fas fa-wrench mr-1"></i> Mantenimiento Correctivo</p>
+
+                <div class="w-full bg-white border border-slate-200 rounded-xl p-5 mb-8 shadow-sm">
+                    <div class="flex justify-between py-2 border-b border-slate-100">
+                        <span class="text-slate-500 text-xs flex items-center gap-2"><i class="fas fa-barcode text-slate-400"></i> Código QR</span>
+                        <span class="text-slate-800 text-xs font-bold font-mono">DISP-2024-45</span>
+                    </div>
+                    <div class="flex justify-between py-2 pt-3">
+                         <span class="text-slate-500 text-xs flex items-center gap-2"><i class="far fa-clock text-slate-400"></i> Hora Validación</span>
+                        <span class="text-slate-800 text-xs font-bold">09:16 AM</span>
+                    </div>
+                </div>
+
+                <button onclick="goTo('corrective-gps')" class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99]">
+                    Continuar a Validación GPS
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA: SELECCIÓN MANUAL - CORRECTIVO (SIN QR) -->
+        <div id="corrective-qr-unavailable" class="screen bg-white relative">
+            <div class="absolute inset-0 flex flex-col p-6 bg-gradient-to-b from-orange-50 to-white overflow-y-auto">
+                
+                <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 relative mx-auto mt-12">
+                    <i class="fas fa-exclamation-triangle text-orange-600 text-4xl"></i>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 text-center">Selección Manual</h2>
+                <p class="text-slate-500 text-center mb-2 text-sm max-w-[280px] mx-auto">El QR no está disponible. Completa la información manualmente.</p>
+                <p class="text-red-600 text-center mb-8 text-xs font-medium"><i class="fas fa-wrench mr-1"></i> Mantenimiento Correctivo</p>
+
+                <div class="w-full bg-white border border-orange-200 rounded-xl p-5 mb-6 shadow-sm">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Cliente y Equipo</h3>
+                    <select id="corrective-manual-client" class="bg-slate-50 text-slate-800 text-sm rounded-xl block w-full p-3 border border-slate-200 focus:ring-2 focus:ring-red-500 focus:border-red-500 font-medium transition-all mb-3">
+                        <option selected>Seleccionar Cliente...</option>
+                        <option>Aptiv Planta 5</option>
+                        <option>Hotel Grand Marquis</option>
+                        <option>Comedor Industrial Bajío</option>
+                        <option>Centro Comercial Altaria</option>
+                    </select>
+                    <select id="corrective-manual-equipment" class="bg-slate-50 text-slate-800 text-sm rounded-xl block w-full p-3 border border-slate-200 focus:ring-2 focus:ring-red-500 focus:border-red-500 font-medium transition-all">
+                        <option selected>Seleccionar Equipo...</option>
+                        <option>Dispensador Crathco #1</option>
+                        <option>Dispensador Crathco #2</option>
+                        <option>Dispensador Bebidas Calientes</option>
+                        <option>Máquina Expendedora Snacks</option>
+                    </select>
+                </div>
+
+                <div class="w-full bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-info-circle text-orange-500 text-lg mt-0.5"></i>
+                        <div>
+                            <p class="text-xs font-bold text-slate-700 mb-1">Explicación Registrada</p>
+                            <p id="corrective-explanation-display" class="text-xs text-slate-600 italic">"QR dañado o no visible"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="goTo('corrective-gps')" class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] mt-auto">
+                    Continuar a Validación GPS
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA: VALIDACIÓN GPS - CORRECTIVO -->
+        <div id="corrective-gps" class="screen bg-white relative">
+            <div class="absolute inset-0 bg-slate-200 opacity-50" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/2000px-World_map_blank_without_borders.svg.png'); background-size: cover; filter: grayscale(100%);"></div>
+            
+            <div class="absolute top-4 left-4 z-20">
+                <button onclick="goTo('corrective-qr-scan')" class="h-10 w-10 rounded-full bg-white hover:bg-slate-50 transition flex items-center justify-center text-slate-600 shadow-md border border-slate-200" aria-label="Volver a escaneo QR">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+            
+            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-white/90 backdrop-blur-sm">
+                
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6 relative">
+                    <div class="absolute inset-0 rounded-full border-4 border-green-500 opacity-25 animate-ping"></div>
+                    <i class="fas fa-map-marker-alt text-green-600 text-4xl"></i>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Ubicación Validada</h2>
+                <p class="text-slate-500 text-center mb-2 text-sm max-w-[250px]">Estás a 150m del punto de servicio. Puedes comenzar.</p>
+                <p class="text-red-600 text-center mb-8 text-xs font-medium"><i class="fas fa-wrench mr-1"></i> Mantenimiento Correctivo</p>
+
+                <div class="w-full bg-white border border-slate-200 rounded-xl p-5 mb-8 shadow-sm">
+                    <div class="flex justify-between py-2 border-b border-slate-100">
+                        <span class="text-slate-500 text-xs flex items-center gap-2"><i class="fas fa-satellite-dish text-slate-400"></i> Precisión GPS</span>
+                        <span class="text-green-600 text-xs font-bold bg-green-50 px-2 py-1 rounded-full">Alta (5m)</span>
+                    </div>
+                    <div class="flex justify-between py-2 pt-3">
+                         <span class="text-slate-500 text-xs flex items-center gap-2"><i class="far fa-clock text-slate-400"></i> Hora Check-in</span>
+                        <span class="text-slate-800 text-xs font-bold">09:15 AM</span>
+                    </div>
+                </div>
+
+                <button onclick="goTo('corrective-form')" class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99]">
+                    Continuar con Mantenimiento
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA: FORMULARIO CORRECTIVO -->
+        <div id="corrective-form" class="screen bg-slate-50">
             <div class="bg-white pt-12 pb-4 px-4 shadow-sm flex items-center gap-4 z-10 border-b border-slate-100 bg-red-50">
                 <button onclick="goTo('dashboard')" class="h-8 w-8 rounded-full bg-white/80 flex items-center justify-center text-red-700 hover:bg-white transition">
                     <i class="fas fa-times"></i>
@@ -1280,16 +1443,19 @@
             <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
                 
                 <div class="mb-6 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Cliente y Equipo</h3>
-                    <select class="calibeb-select bg-slate-50 text-slate-800 text-sm rounded-xl block w-full p-3 border border-slate-200 focus:ring-2 focus:ring-red-500 focus:border-red-500 font-medium transition-all mb-3 bg-[url('data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%2364748b\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg\'>')]">
-                        <option selected>Seleccionar Cliente...</option>
-                        <option>Aptiv Planta 5</option>
-                        <option>Comedor Industrial Bajío</option>
-                    </select>
-                    <select class="calibeb-select bg-slate-50 text-slate-800 text-sm rounded-xl block w-full p-3 border border-slate-200 focus:ring-2 focus:ring-red-500 focus:border-red-500 font-medium transition-all bg-[url('data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%2364748b\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg\'>')]">
-                        <option selected>Seleccionar Equipo...</option>
-                    </select>
-                     <p class="text-xs text-slate-400 mt-2 flex items-center"><i class="fas fa-info-circle mr-1"></i> Escanea el QR del equipo para autocompletar.</p>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Cliente y Equipo</h3>
+                        <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded"><i class="fas fa-check-circle mr-1"></i>VALIDADO</span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-xs text-slate-500 font-medium mb-1 block">Cliente</label>
+                        <input type="text" readonly value="Aptiv Planta 5" class="bg-slate-50 text-slate-700 text-sm rounded-xl block w-full p-3 border border-slate-200 font-medium cursor-not-allowed">
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-xs text-slate-500 font-medium mb-1 block">Equipo</label>
+                        <input type="text" readonly value="Dispensador Crathco #1" class="bg-slate-50 text-slate-700 text-sm rounded-xl block w-full p-3 border border-slate-200 font-medium cursor-not-allowed">
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 flex items-center"><i class="fas fa-qrcode mr-1"></i> Datos validados por escaneo QR</p>
                 </div>
 
                 <div class="mb-6">
@@ -1324,7 +1490,7 @@
 
         <div id="signature" class="screen bg-white flex flex-col">
             <div class="pt-12 px-6 pb-6 relative">
-                <button onclick="goTo('step7')" class="absolute top-4 left-4 h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-slate-600 shadow-sm" aria-label="Volver al paso anterior">
+                <button onclick="goTo('dashboard')" class="absolute top-4 left-4 h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-slate-600 shadow-sm" aria-label="Cancelar y volver al dashboard">
                     <i class="fas fa-arrow-left"></i>
                 </button>
                 <h2 class="text-2xl font-bold text-slate-800 mb-1">Finalizar Servicio</h2>
@@ -1362,7 +1528,7 @@
                     <i class="fas fa-check-circle"></i> Finalizar y Enviar
                 </button>
                 
-                <button onclick="goTo('step7')" class="w-full py-4 text-slate-400 text-sm font-medium hover:text-slate-600 transition mt-2">Cancelar y volver</button>
+                <button onclick="goTo('dashboard')" class="w-full py-4 text-slate-400 text-sm font-medium hover:text-slate-600 transition mt-2">Cancelar y volver</button>
             </div>
         </div>
 
