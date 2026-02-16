@@ -82,7 +82,7 @@
                         <i class="fas fa-home"></i> Volver al Dashboard
                     </button>
                     
-                    <button onclick="window.open('reporte.html', '_blank')" class="w-full bg-white/80 backdrop-blur-sm hover:bg-white text-slate-700 py-3.5 rounded-xl font-semibold border border-slate-200 shadow-sm flex items-center justify-center gap-2 transition">
+                    <button onclick="openReport()" class="w-full bg-white/80 backdrop-blur-sm hover:bg-white text-slate-700 py-3.5 rounded-xl font-semibold border border-slate-200 shadow-sm flex items-center justify-center gap-2 transition">
                         <i class="fas fa-file-pdf"></i> Ver Reporte PDF
                     </button>
                 </div>
@@ -95,5 +95,25 @@
             <div class="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0.7s;"></div>
         </div>
     </div>
+
+    <script>
+        // Función para abrir el reporte correcto según el tipo de mantenimiento
+        function openReport() {
+            const reportType = localStorage.getItem('currentReportType');
+            let reportUrl = 'reporte.html'; // Default: mantenimiento preventivo estándar
+            
+            if (reportType === 'hielo') {
+                reportUrl = 'reporte-hielo.html';
+            }
+            // Podrías agregar más tipos aquí en el futuro
+            // else if (reportType === 'otro') { reportUrl = 'reporte-otro.html'; }
+            
+            // Limpiar el localStorage después de leer
+            localStorage.removeItem('currentReportType');
+            
+            // Abrir el reporte
+            window.open(reportUrl, '_blank');
+        }
+    </script>
 </body>
 </html>

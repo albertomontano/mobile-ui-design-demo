@@ -250,6 +250,22 @@
                         </div>
                     </div>
 
+                    <!-- NUEVO: MÁQUINA DE HIELO - Preventivo -->
+                    <div onclick="goTo('ice-machine-step')" class="bg-white p-4 rounded-xl shadow-sm border border-blue-300 border-l-4 border-l-blue-500 active:bg-slate-50 transition cursor-pointer relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-bold text-slate-400">MNT-2026-126</span>
+                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">PENDIENTE</span>
+                        </div>
+                        <h4 class="text-slate-800 font-bold text-base">Comedor Industrial Bajío</h4>
+                        <p class="text-sm text-slate-500 mb-2 truncate">Prev. Máquina de Hielo Scotsman</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                                <i class="far fa-clock text-blue-500"></i> 01:00 PM - 02:00 PM
+                            </div>
+                            <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">Preventivo</span>
+                        </div>
+                    </div>
+
                     <!-- COMPLETADO - Con tag Preventivo -->
                     <div class="bg-slate-100 p-4 rounded-xl shadow-sm border border-slate-200 border-l-4 border-l-green-500 opacity-75">
                         <div class="flex justify-between items-start mb-1">
@@ -1271,6 +1287,82 @@
         </div>
 
         <!-- ============================================
+             MANTENIMIENTO MÁQUINA DE HIELO
+             ============================================ -->
+
+        <div id="ice-machine-step" class="screen bg-slate-50">
+            <div class="bg-white pt-12 pb-4 px-6 shadow-sm border-b border-slate-100 z-10">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-1 rounded">Máquina de Hielo</span>
+                    <span class="text-xs font-bold text-slate-400">Preventivo</span>
+                </div>
+                <h2 class="text-xl font-bold text-slate-800 mt-3">Mant. Máquina de Hielo Scotsman</h2>
+                <div class="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
+                    <div class="h-full bg-blue-500 w-[100%] rounded-full relative"></div>
+                </div>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 no-scrollbar pb-24">
+                <div class="mb-8 space-y-3">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Lista de Verificación</h3>
+                    
+                    <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-blue-300">
+                        <input type="checkbox" class="mt-0.5 w-5 h-5 text-blue-500 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 leading-tight">Limpieza de flauta</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-blue-300">
+                        <input type="checkbox" class="mt-0.5 w-5 h-5 text-blue-500 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 leading-tight">Limpieza de bomba de agua</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-blue-300">
+                        <input type="checkbox" class="mt-0.5 w-5 h-5 text-blue-500 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 leading-tight">Limpieza de condensador</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-blue-300">
+                        <input type="checkbox" class="mt-0.5 w-5 h-5 text-blue-500 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 leading-tight">Limpieza de cortina y charola</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm cursor-pointer transition hover:border-blue-300">
+                        <input type="checkbox" class="mt-0.5 w-5 h-5 text-blue-500 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 leading-tight">Limpieza exterior</span>
+                    </label>
+
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mt-4">
+                        <label class="text-sm font-medium text-slate-700 mb-3 block">Ciclo:</label>
+                        <div class="flex items-center gap-3">
+                            <input type="number" class="border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500" placeholder="Ej: 25" min="0" style="width: 100px;">
+                            <select class="flex-shrink-0 border border-slate-300 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 bg-white" style="width: 85px;">
+                                <option value="minutos">mins</option>
+                                <option value="horas">hr</option>
+                            </select>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">Tiempo que tarda en completar un ciclo</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia Fotográfica</h3>
+                <button class="w-full bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-4 text-slate-400 hover:text-slate-600 font-bold text-sm flex items-center justify-center gap-2 transition group mb-8">
+                    <i class="fas fa-camera text-lg group-hover:scale-110 transition"></i>
+                    <span>Agregar Foto</span>
+                    <span class="text-xs font-normal opacity-60">(máx. 5)</span>
+                </button>
+
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Notas del Técnico</h3>
+                <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 resize-none shadow-sm" placeholder="Observaciones sobre el mantenimiento de la máquina de hielo..."></textarea>
+            </div>
+
+            <div class="absolute bottom-0 w-full bg-white p-4 border-t border-slate-100 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
+                <button onclick="goTo('dashboard')" class="py-3.5 px-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center" aria-label="Volver al dashboard">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Guardar</button>
+                <button onclick="goTo('signature', {reportType: 'hielo'})" class="flex-[2] bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+                    Finalizar y Firmar <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================
              FLUJO DE MANTENIMIENTO CORRECTIVO
              ============================================ -->
 
@@ -1463,6 +1555,11 @@
                         Descripción de la Falla <span class="text-red-500">*</span>
                     </h3>
                     <textarea required data-min-length="20" class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-32 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 resize-none shadow-sm" placeholder="Describa el problema encontrado y la solución aplicada... (mínimo 20 caracteres)"></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Refacciones Utilizadas</h3>
+                    <textarea class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 h-24 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 resize-none shadow-sm" placeholder="Listar refacciones y partes reemplazadas en la reparación..."></textarea>
                 </div>
 
                 <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-wider">Evidencia del Trabajo (Req.)</h3>

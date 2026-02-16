@@ -699,7 +699,13 @@ function setupEventListeners() {
 
 // ===== EXPONER API GLOBAL PARA COMPATIBILIDAD =====
 // Estas funciones están disponibles globalmente para onclick en el HTML
-window.goTo = (screenId) => NavigationController.goTo(screenId);
+window.goTo = (screenId, options = {}) => {
+    // Si viene tipo de reporte, guardarlo para success.html
+    if (options.reportType) {
+        localStorage.setItem('currentReportType', options.reportType);
+    }
+    NavigationController.goTo(screenId);
+};
 window.goBack = () => NavigationController.goBack();
 window.updateDashboardStats = (range) => DashboardManager.updateStats(range);
 
