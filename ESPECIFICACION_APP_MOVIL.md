@@ -1,7 +1,9 @@
 # ESPECIFICACIÓN TÉCNICA — CALIBEB MOBILE APP (REAL)
-**Versión:** 1.0 | **Fecha:** Abril 2026  
+**Versión:** 1.2 | **Fecha:** Abril 2026  
 **Autor:** Análisis automatizado del prototipo `calibeb_demo.html` V5  
 **Destinatarios:** Agente Frontend (CaliWeb) · Agente Backend (calibeb-api) · Agente Mobile
+
+> **v1.2:** Incorpora módulo de Asignación QR/GPS/Fotografías para Gerentes CEDIS, modelo de roles y permisos (RBAC), corrección de dependencias faltantes, y revisión multi-perspectiva (Arquitecto · UI/UX · Product Owner · QA · Seguridad).
 
 ---
 
@@ -66,7 +68,7 @@ react-native-gesture-handler Gestos táctiles
 
 ### Funcionalidades Nativas
 ```
-expo-camera              Cámara + QR scanner (preventivo y correctivo)
+expo-camera              Cámara + QR scanner (preventivo, correctivo y asignación)
 expo-location            GPS / geolocalización
 expo-image-picker        Selección de fotos de galería
 expo-media-library       Guardar fotos en dispositivo
@@ -75,7 +77,15 @@ expo-sharing             Compartir PDF por email / WhatsApp
 expo-notifications       Push notifications (órdenes nuevas, recordatorios)
 expo-secure-store        Almacenamiento seguro de tokens JWT
 expo-file-system         Manejo de archivos (fotos temporales)
-expo-barcode-scanner     (alternativa lightweight para QR)
+expo-haptics             Feedback táctil (confirmaciones, errores)
+```
+
+### Utilidades Adicionales (REQUERIDAS — faltaban en v1.0)
+```
+geolib                          Cálculo de distancia Haversine entre coordenadas GPS
+@react-native-community/netinfo Detección de estado de red (online/offline)
+@react-native-community/datetimepicker   DatePicker nativo iOS/Android
+react-native-maps               Mapa embebido (check-in GPS y asignación de ubicación)
 ```
 
 ### Estado y Datos
@@ -157,6 +167,14 @@ calibeb-app/
 │       ├── dashboard/
 │       │   ├── index.tsx         # Mi Agenda — pantalla principal
 │       │   └── [orderId].tsx     # Detalle de orden (ruta dinámica)
+│       ├── equipment-setup/      # 🔒 Solo GERENTE_CEDIS / ADMIN_GLOBAL
+│       │   ├── _layout.tsx       # Stack + guard de roles
+│       │   ├── index.tsx         # Lista equipos sin QR/GPS en el CEDIS
+│       │   ├── search.tsx        # Buscar equipo por CEDIS + dropdown
+│       │   ├── assign-qr.tsx     # Paso 1: Escanear QR del equipo
+│       │   ├── assign-location.tsx # Paso 2: Capturar GPS + mapa
+│       │   ├── assign-photos.tsx  # Paso 3: Fotografías del equipo
+│       │   └── confirm.tsx       # Resumen + confirmación final
 │       ├── preventive/           # Flujo preventivo completo
 │       │   ├── _layout.tsx       # Stack navigator del flujo
 │       │   ├── checkin.tsx       # Validación GPS
@@ -185,6 +203,11 @@ calibeb-app/
 │       └── profile/
 │           └── index.tsx         # Perfil del técnico
 │
+│   ⚠️  NOTA DE ARQUITECTURA: Expo Router usa layouts anidados para
+│      protección de rutas. (app)/equipment-setup/_layout.tsx debe
+│      verificar el rol del usuario y redirigir a /dashboard si no
+│      tiene permisos antes de renderizar cualquier pantalla hija.
+│
 ├── components/                   # Componentes reutilizables
 │   ├── ui/                       # Átomos de UI
 │   │   ├── Button.tsx
@@ -207,20 +230,26 @@ calibeb-app/
 │   │   └── CalibrationTable.tsx  # Tabla de 12 válvulas
 │   ├── camera/
 │   │   ├── QRScanner.tsx         # Componente de escaneo QR
-│   │   └── PhotoCapture.tsx      # Captura de fotos
+│   │   └── PhotoCapture.tsx      # Captura de fotos con preview + reintento
 │   ├── signature/
 │   │   └── SignatureCanvas.tsx   # Canvas de firma digital
 │   ├── gps/
-│   │   └── LocationValidator.tsx # Validador de GPS con mapa
+│   │   ├── LocationValidator.tsx # Validador de GPS con distancia
+│   │   └── LocationPicker.tsx    # Picker de ubicación para asignación (mapa interactivo)
+│   ├── equipment-setup/
+│   │   ├── EquipmentCard.tsx     # Tarjeta de equipo con estado de asignación
+│   │   └── SetupProgress.tsx    # Indicador de progreso de 3 pasos
 │   └── report/
 │       ├── ReportPreventive.tsx  # Template reporte preventivo
 │       └── ReportIce.tsx         # Template reporte hielo
 │
 ├── hooks/                        # Custom hooks
-│   ├── useAuth.ts                # Autenticación y sesión
+│   ├── useAuth.ts                # Autenticación, sesión y verificación de rol
+│   ├── usePermissions.ts         # RBAC — verifica permisos por recurso/acción
 │   ├── useLocation.ts            # GPS y geofencing
 │   ├── useCamera.ts              # Cámara y QR
 │   ├── useWorkOrders.ts          # CRUD de órdenes (TanStack Query)
+│   ├── useEquipmentSetup.ts      # Flujo de asignación QR/GPS/fotos
 │   ├── useForm.ts                # Form helpers
 │   └── useOffline.ts             # Detección offline + queue
 │
@@ -229,19 +258,22 @@ calibeb-app/
 │   ├── auth.service.ts           # Login, logout, refresh token
 │   ├── workOrders.service.ts     # CRUD órdenes de trabajo
 │   ├── reports.service.ts        # Envío de reportes
-│   ├── upload.service.ts         # Upload de fotos/firmas
+│   ├── equipment.service.ts      # CRUD equipos + asignación QR/GPS
+│   ├── upload.service.ts         # Upload de fotos/firmas/equipos
 │   └── notifications.service.ts  # Push notifications
 │
 ├── stores/                       # Estado global con Zustand
-│   ├── auth.store.ts             # Usuario autenticado, token
+│   ├── auth.store.ts             # Usuario autenticado, token, ROL
 │   ├── workOrder.store.ts        # Orden activa, progreso de pasos
+│   ├── equipmentSetup.store.ts   # Equipo en proceso de asignación
 │   ├── form.store.ts             # Datos del formulario activo
 │   └── app.store.ts              # Config, offline status
 │
 ├── types/                        # TypeScript types (COMPARTIDOS con backend)
-│   ├── auth.types.ts
+│   ├── auth.types.ts             # UserRole, Permissions, AuthUser
 │   ├── workOrder.types.ts        # WorkOrder, Equipment, Client, Technician
 │   ├── report.types.ts           # ReportData, CalibrationRow, ChecklistItem
+│   ├── equipment.types.ts        # EquipmentSetupData, AssignmentStatus
 │   ├── api.types.ts              # Responses, Errors, Pagination
 │   └── index.ts                  # Re-exports
 │
@@ -327,9 +359,12 @@ export const Colors = {
 ### .env.local (variables de entorno)
 ```bash
 EXPO_PUBLIC_API_URL=https://api.calibeb.com/v1
+EXPO_PUBLIC_API_URL_STAGING=https://staging-api.calibeb.com/v1
 EXPO_PUBLIC_GPS_RADIUS_METERS=500
 EXPO_PUBLIC_MIN_FAULT_DESCRIPTION_CHARS=20
 EXPO_PUBLIC_MAX_PHOTOS_PER_ORDER=10
+EXPO_PUBLIC_MAX_PHOTO_SIZE_MB=5
+EXPO_PUBLIC_EQUIPMENT_SETUP_MIN_PHOTOS=2
 ```
 
 ---
@@ -337,6 +372,32 @@ EXPO_PUBLIC_MAX_PHOTOS_PER_ORDER=10
 ## 6. TIPOS TYPESCRIPT (COMPARTIDOS CON BACKEND)
 
 Estos tipos deben ser revisados con el agente del backend para garantizar compatibilidad exacta con `calibeb-api`.
+
+```typescript
+// types/auth.types.ts
+
+export type UserRole =
+  | 'TECNICO'           // Solo puede ver sus propias órdenes y ejecutar mantenimientos
+  | 'GERENTE_CEDIS'     // Puede asignar QR/GPS a equipos de su CEDIS; ve reportes de su zona
+  | 'ADMIN_GLOBAL';     // Acceso total — todos los CEDIS, configuración del sistema
+
+export interface UserPermissions {
+  canExecuteMaintenance: boolean;    // TECNICO | GERENTE_CEDIS | ADMIN_GLOBAL
+  canAssignEquipmentQR: boolean;     // GERENTE_CEDIS | ADMIN_GLOBAL
+  canViewAllCedis: boolean;          // Solo ADMIN_GLOBAL
+  canManageUsers: boolean;           // Solo ADMIN_GLOBAL
+}
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  cedisId: string | null;   // null solo para ADMIN_GLOBAL
+  cedisName: string | null;
+  permissions: UserPermissions;
+}
+```
 
 ```typescript
 // types/workOrder.types.ts
@@ -373,9 +434,41 @@ export interface Equipment {
   brand: string;
   model: string;
   serialNumber: string;
-  qrCode: string | null;
+  // Campos de asignación en campo (null = pendiente de asignación por Gerente CEDIS)
+  qrCode: string | null;                          // null si aún no asignado
+  gpsCoordinates: { lat: number; lng: number } | null;  // Coordenadas fijas del equipo
+  locationDescription: string | null;             // Ej: "Comedor Principal, Zona B"
+  photos: string[];                               // URLs de fotos del equipo en su ubicación
+  setupCompletedAt: string | null;               // ISO datetime de cuándo se completó asignación
+  setupCompletedBy: string | null;               // ID del gerente que completó la asignación
+  isReadyForMaintenance: boolean;                // true solo cuando qrCode + gpsCoordinates están asignados
   installDate: string;       // ISO date YYYY-MM-DD
   lastMaintenance: string;   // ISO date YYYY-MM-DD
+}
+
+// types/equipment.types.ts
+
+export type AssignmentStatus = 'PENDIENTE' | 'PARCIAL' | 'COMPLETADO';
+
+export interface EquipmentSetupData {
+  equipmentId: string;
+  // Paso 1: QR
+  qrCode: string;            // Valor del QR escaneado
+  qrScannedAt: string;       // ISO datetime
+  // Paso 2: Ubicación GPS
+  gpsCoordinates: { lat: number; lng: number };
+  gpsAccuracy: number;       // metros
+  locationDescription: string;  // Descripción textual (requerida)
+  locationCapturedAt: string;
+  // Paso 3: Fotografías
+  photos: Array<{
+    uri: string;            // URI local temporal
+    type: 'frontal' | 'lateral' | 'detalle' | 'contexto';
+    timestamp: string;
+  }>;
+  // Auditoría
+  assignedBy: string;        // ID del Gerente CEDIS
+  assignedAt: string;        // ISO datetime de envío
 }
 
 export interface WorkOrder {
@@ -496,6 +589,95 @@ export interface ReportData {
 
 ## 7. ESTADO GLOBAL — ZUSTAND STORES
 
+### stores/equipmentSetup.store.ts
+```typescript
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import type { Equipment, EquipmentSetupData } from '@/types';
+
+interface EquipmentSetupStore {
+  // Equipo seleccionado para asignar
+  targetEquipment: Equipment | null;
+  setTargetEquipment: (eq: Equipment | null) => void;
+
+  // Draft del proceso de asignación (persiste entre pasos)
+  setupDraft: Partial<EquipmentSetupData>;
+  updateSetupDraft: (data: Partial<EquipmentSetupData>) => void;
+  clearSetupDraft: () => void;
+
+  // Paso actual del wizard (1=QR, 2=GPS, 3=Fotos, 4=Confirmar)
+  currentStep: 1 | 2 | 3 | 4;
+  setCurrentStep: (step: 1 | 2 | 3 | 4) => void;
+}
+
+export const useEquipmentSetupStore = create<EquipmentSetupStore>()(
+  persist(
+    (set) => ({
+      targetEquipment: null,
+      setTargetEquipment: (eq) => set({ targetEquipment: eq }),
+      setupDraft: {},
+      updateSetupDraft: (data) =>
+        set((state) => ({ setupDraft: { ...state.setupDraft, ...data } })),
+      clearSetupDraft: () => set({ setupDraft: {}, currentStep: 1, targetEquipment: null }),
+      currentStep: 1,
+      setCurrentStep: (step) => set({ currentStep: step }),
+    }),
+    {
+      name: 'equipment-setup-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
+```
+
+### stores/auth.store.ts (actualizado con roles)
+```typescript
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import * as SecureStore from 'expo-secure-store';
+import type { AuthUser } from '@/types';
+
+interface AuthStore {
+  user: AuthUser | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  login: (user: AuthUser, token: string) => void;
+  logout: () => void;
+  // Helpers de permisos (evitan verificar role directamente en componentes)
+  canAssignEquipment: () => boolean;
+  isAdmin: () => boolean;
+}
+
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set, get) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      login: (user, token) =>
+        set({ user, token, isAuthenticated: true }),
+      logout: () =>
+        set({ user: null, token: null, isAuthenticated: false }),
+      // Métodos de conveniencia para RBAC
+      canAssignEquipment: () => {
+        const role = get().user?.role;
+        return role === 'GERENTE_CEDIS' || role === 'ADMIN_GLOBAL';
+      },
+      isAdmin: () => get().user?.role === 'ADMIN_GLOBAL',
+    }),
+    {
+      name: 'auth-storage',
+      storage: createJSONStorage(() => ({
+        getItem: (name) => SecureStore.getItemAsync(name),
+        setItem: (name, value) => SecureStore.setItemAsync(name, value),
+        removeItem: (name) => SecureStore.deleteItemAsync(name),
+      })),
+    }
+  )
+);
+```
+
 ### stores/workOrder.store.ts
 ```typescript
 import { create } from 'zustand';
@@ -550,44 +732,6 @@ export const useWorkOrderStore = create<WorkOrderStore>()(
 );
 ```
 
-### stores/auth.store.ts
-```typescript
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import * as SecureStore from 'expo-secure-store';
-import type { Technician } from '@/types';
-
-interface AuthStore {
-  technician: Technician | null;
-  token: string | null;
-  isAuthenticated: boolean;
-  login: (technician: Technician, token: string) => void;
-  logout: () => void;
-}
-
-export const useAuthStore = create<AuthStore>()(
-  persist(
-    (set) => ({
-      technician: null,
-      token: null,
-      isAuthenticated: false,
-      login: (technician, token) =>
-        set({ technician, token, isAuthenticated: true }),
-      logout: () =>
-        set({ technician: null, token: null, isAuthenticated: false }),
-    }),
-    {
-      name: 'auth-storage',
-      storage: createJSONStorage(() => ({
-        getItem: (name) => SecureStore.getItemAsync(name),
-        setItem: (name, value) => SecureStore.setItemAsync(name, value),
-        removeItem: (name) => SecureStore.deleteItemAsync(name),
-      })),
-    }
-  )
-);
-```
-
 ---
 
 ## 8. CAPA DE API — INTEGRACIÓN CON CALIBEB-API
@@ -632,16 +776,19 @@ export default api;
 
 ### Endpoints requeridos de calibeb-api (PARA REVISIÓN DEL BACKEND)
 
-El agente de backend debe confirmar o crear los siguientes endpoints:
+El agente de backend debe confirmar o crear los siguientes endpoints.
+
+> **Nota de seguridad:** Todos los endpoints de `/equipment-setup/` deben verificar que el `Authorization` del JWT corresponde a un usuario con rol `GERENTE_CEDIS` o `ADMIN_GLOBAL`. El backend no debe confiar únicamente en el frontend para este control.
 
 ```
 AUTH
-POST   /auth/login                    { email, password } → { token, refreshToken, technician }
+POST   /auth/login                    { email, password } → { token, refreshToken, user: AuthUser }
+                                       ⚠️ El objeto user DEBE incluir el campo 'role' y 'permissions'
 POST   /auth/refresh                  { refreshToken } → { token }
 POST   /auth/logout
 
 ÓRDENES DE TRABAJO
-GET    /work-orders?date=&status=     Lista de órdenes del técnico
+GET    /work-orders?date=&status=     Lista de órdenes del técnico autenticado
 GET    /work-orders/:id               Detalle de una orden
 PATCH  /work-orders/:id/status        { status: 'EN_PROCESO' | 'COMPLETADO' }
 
@@ -653,18 +800,318 @@ GET    /reports/:id/pdf               Descargar PDF generado
 UPLOADS
 POST   /uploads/photo                 FormData { file, orderId, type }  → { url }
 POST   /uploads/signature             FormData { file, orderId }         → { url }
+POST   /uploads/equipment-photo       FormData { file, equipmentId, photoType } → { url }
+                                       photoType: 'frontal' | 'lateral' | 'detalle' | 'contexto'
 
-VALIDACIÓN QR
+VALIDACIÓN QR (uso del técnico en mantenimiento)
 POST   /equipment/validate-qr         { qrCode } → { equipment, client }
+                                       404 si el QR no existe o no está asignado a ningún equipo
+
+ASIGNACIÓN EN CAMPO (solo GERENTE_CEDIS / ADMIN_GLOBAL) 🔒
+GET    /equipment?cedisId=&setupStatus=  Lista de equipos del CEDIS con estado de asignación
+                                          setupStatus: 'PENDIENTE' | 'PARCIAL' | 'COMPLETADO'
+GET    /equipment/:id                    Detalle de un equipo
+PATCH  /equipment/:id/assign-qr          { qrCode } → { equipment }
+                                          Valida que el QR no esté asignado a otro equipo
+PATCH  /equipment/:id/assign-location    { lat, lng, accuracy, locationDescription }
+PATCH  /equipment/:id/assign-photos      { photoUrls: string[] }
+POST   /equipment/:id/complete-setup     {} → marca equipo como isReadyForMaintenance=true
+                                          Solo procede si qrCode + gpsCoordinates están presentes
+
+CATÁLOGOS
+GET    /cedis                            Lista de CEDIS (para ADMIN_GLOBAL)
+GET    /cedis/:id/equipment              Equipos de un CEDIS específico
 
 PERFIL
-GET    /technicians/me                Info del técnico autenticado
-PATCH  /technicians/me                Actualizar perfil
+GET    /users/me                         Info del usuario autenticado (técnico o gerente)
+PATCH  /users/me                         Actualizar perfil (pushToken incluido)
 ```
 
 ---
 
-## 9. IMPLEMENTACIÓN POR PANTALLA
+## 9. CONTROL DE ACCESO BASADO EN ROLES (RBAC)
+
+### Matriz de permisos
+
+| Módulo / Acción | TECNICO | GERENTE_CEDIS | ADMIN_GLOBAL |
+|---|:---:|:---:|:---:|
+| Ver su agenda / órdenes | ✅ | ✅ | ✅ |
+| Ejecutar mantenimiento preventivo | ✅ | ✅ | ✅ |
+| Ejecutar mantenimiento correctivo | ✅ | ✅ | ✅ |
+| Ver equipos de su CEDIS | ❌ | ✅ | ✅ |
+| **Asignar QR a equipo** | ❌ | ✅ (solo su CEDIS) | ✅ |
+| **Asignar GPS a equipo** | ❌ | ✅ (solo su CEDIS) | ✅ |
+| **Subir fotos de equipo** | ❌ | ✅ (solo su CEDIS) | ✅ |
+| Ver equipos de otro CEDIS | ❌ | ❌ | ✅ |
+| Gestionar usuarios | ❌ | ❌ | ✅ |
+
+### Implementación del guard de rutas
+
+```typescript
+// app/(app)/equipment-setup/_layout.tsx
+import { Redirect, Stack } from 'expo-router';
+import { useAuthStore } from '@/stores/auth.store';
+
+export default function EquipmentSetupLayout() {
+  const canAssign = useAuthStore((state) => state.canAssignEquipment());
+
+  // Redirige silenciosamente si no tiene permisos
+  if (!canAssign) {
+    return <Redirect href="/(app)/dashboard" />;
+  }
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+      }}
+    />
+  );
+}
+```
+
+### Mostrar/ocultar módulo en el Tab Navigator
+
+```typescript
+// app/(app)/_layout.tsx
+const { user } = useAuthStore();
+const canAssign = user?.permissions.canAssignEquipmentQR;
+
+// Tab de "Equipos" solo visible para GERENTE_CEDIS y ADMIN_GLOBAL
+<Tabs.Screen
+  name="equipment-setup"
+  options={{
+    href: canAssign ? '/equipment-setup' : null,  // null oculta el tab
+    title: 'Equipos',
+    tabBarIcon: ({ color }) => <TabBarIcon name="qrcode" color={color} />,
+  }}
+/>
+```
+
+### Hook de permisos reutilizable
+
+```typescript
+// hooks/usePermissions.ts
+import { useAuthStore } from '@/stores/auth.store';
+
+export function usePermissions() {
+  const user = useAuthStore((state) => state.user);
+
+  return {
+    canAssignEquipment: user?.permissions.canAssignEquipmentQR ?? false,
+    canViewAllCedis: user?.permissions.canViewAllCedis ?? false,
+    isAdmin: user?.role === 'ADMIN_GLOBAL',
+    isManager: user?.role === 'GERENTE_CEDIS',
+    isTechnician: user?.role === 'TECNICO',
+    userCedisId: user?.cedisId ?? null,
+  };
+}
+```
+
+---
+
+## 10. MÓDULO DE ASIGNACIÓN EN CAMPO (GERENTE CEDIS)
+
+### Contexto de negocio
+
+Antes de que un técnico pueda realizar un mantenimiento, cada equipo en el sistema **DEBE tener asignado**:
+1. **Código QR** — etiqueta física pegada al equipo en la planta del cliente
+2. **Coordenadas GPS** — ubicación exacta del equipo para validar el check-in del técnico
+3. **Fotografías** — registro visual del equipo instalado en su ubicación real
+
+Este proceso lo realiza el **Gerente de CEDIS** yendo físicamente al sitio del cliente. Sin este proceso previo, la app bloqueará el inicio de mantenimientos en ese equipo.
+
+### Flujo completo — 4 pasos
+
+```
+equipment-setup/index.tsx
+  └─ Seleccionar CEDIS (solo ADMIN_GLOBAL, GERENTEs ven solo su CEDIS)
+  └─ Lista de equipos: PENDIENTE | PARCIAL | COMPLETADO
+        ↓ Tap equipo PENDIENTE o PARCIAL
+equipment-setup/search.tsx (buscar por nombre/serie/dropdown)
+        ↓ Seleccionar equipo
+equipment-setup/assign-qr.tsx      → PASO 1: Escaneo QR
+        ↓
+equipment-setup/assign-location.tsx → PASO 2: GPS + descripción
+        ↓
+equipment-setup/assign-photos.tsx  → PASO 3: Mínimo 2 fotos
+        ↓
+equipment-setup/confirm.tsx        → Resumen + confirmar envío
+```
+
+### Diseño visual: Tema Violeta/Índigo
+
+Para distinguir este módulo de los flujos de técnicos, usar el color `#7C3AED` (violet-700):
+- Header: `bg-violet-700`
+- Botones primarios: `bg-violet-600`
+- Badges: `bg-violet-50 text-violet-700`
+- Progress steps: violeta activo, slate inactivo
+
+### Implementación por pantalla
+
+#### equipment-setup/index.tsx — Lista de equipos del CEDIS
+```
+Query: useQuery(['equipment', cedisId, 'PENDIENTE'], () =>
+  equipmentService.getEquipmentByCedis(cedisId, { setupStatus: 'PENDIENTE' })
+)
+
+UI:
+  - Header violeta con título "Asignación de Equipos"
+  - Resumen stats: X PENDIENTES | X PARCIALES | X COMPLETADOS
+  - Tabs: Pendientes / Parciales / Todos
+  - FlatList de <EquipmentCard> con badge de estado
+  - Badge PENDIENTE: violeta | PARCIAL: ámbar | COMPLETADO: verde
+  - Cada card muestra: nombre equipo, marca/modelo, cliente, dirección
+  - Tap → navigate to assign-qr con equipmentId como parámetro
+
+Estado vacío (todos completados):
+  - Ícono check verde grande
+  - "Todos los equipos de tu CEDIS tienen QR y ubicación asignados"
+```
+
+#### equipment-setup/assign-qr.tsx — Paso 1: Escaneo QR
+```
+UI:
+  - <SetupProgress step={1} total={3} /> en el header
+  - Instrucciones: "Escanea el código QR pegado en el equipo"
+  - <QRScanner /> viewfinder con tema violeta
+  - Al escanear: verificar que el QR NO esté asignado a otro equipo
+      → POST /equipment/validate-qr-availability { qrCode, targetEquipmentId }
+      → Si ya asignado: mostrar error con datos del equipo que lo tiene
+      → Si disponible: navegar al paso 2
+  - Card de confirmación mostrando el código escaneado
+  - Botón de linterna
+
+Lógica:
+  const { updateSetupDraft } = useEquipmentSetupStore();
+  onQRScanned = async (qrCode) => {
+    const isAvailable = await equipmentService.checkQRAvailability(qrCode, equipment.id);
+    if (!isAvailable) showError('Este QR ya está asignado a otro equipo');
+    else {
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      updateSetupDraft({ qrCode, qrScannedAt: new Date().toISOString() });
+      router.push('/equipment-setup/assign-location');
+    }
+  };
+```
+
+#### equipment-setup/assign-location.tsx — Paso 2: GPS y descripción
+```
+UI:
+  - <SetupProgress step={2} total={3} />
+  - Mapa embebido (react-native-maps) con marcador en posición actual
+  - Botón "Capturar mi ubicación actual" con spinner mientras obtiene GPS
+  - Precisión mostrada en tiempo real: badge verde (<10m) / ámbar (<30m) / rojo (>30m)
+  - Después de capturar: mostrar lat/lng + precisión en card
+  - Campo OBLIGATORIO: TextInput "Descripción de ubicación"
+    placeholder: "Ej: Comedor Principal, Pared Norte, junto a la ventana"
+    minLength: 10 caracteres
+  - Solo habilitar "Continuar" cuando GPS capturado Y descripción >= 10 chars
+
+Lógica:
+  const captureLocation = async () => {
+    setCapturing(true);
+    try {
+      const { coords } = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      });
+      // Exigir precisión mínima de 30 metros
+      if (coords.accuracy > 30) {
+        showWarning(`Precisión baja (${coords.accuracy}m). Espera mejor señal.`);
+        return;
+      }
+      updateSetupDraft({
+        gpsCoordinates: { lat: coords.latitude, lng: coords.longitude },
+        gpsAccuracy: coords.accuracy,
+        locationCapturedAt: new Date().toISOString(),
+      });
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } finally {
+      setCapturing(false);
+    }
+  };
+```
+
+#### equipment-setup/assign-photos.tsx — Paso 3: Fotografías
+```
+UI:
+  - <SetupProgress step={3} total={3} />
+  - Grid 2×2 de slots de fotos con tipos:
+    · FRONTAL (requerida) — vista frontal completa del equipo
+    · LATERAL (requerida) — vista lateral con contexto del ambiente
+    · DETALLE (opcional) — detalle del serial/modelo
+    · CONTEXTO (opcional) — foto general del área donde está el equipo
+  - Cada slot: botón de cámara o ícono de galería
+  - Al tomar foto: preview en el mismo slot + botón para retomar
+  - Contador: "2/4 fotos tomadas (mínimo 2 requeridas)"
+  - Solo habilitar "Continuar" si al menos FRONTAL + LATERAL están capturadas
+
+Validaciones:
+  - Tamaño máximo por foto: 5MB (definido en .env)
+  - Comprimir automáticamente con expo-image-manipulator si excede tamaño:
+      await ImageManipulator.manipulateAsync(uri, [], { compress: 0.7, format: JPEG })
+  - Formato aceptado: JPEG únicamente (para compatibilidad con PDF)
+```
+
+#### equipment-setup/confirm.tsx — Paso 4: Confirmación
+```
+UI:
+  - Resumen completo:
+    · Tarjeta equipo: nombre, marca, modelo, serie, cliente
+    · Tarjeta QR: código escaneado con ícono de check verde
+    · Tarjeta Ubicación: lat/lng, precisión, descripción
+    · Grid de miniaturas de fotos tomadas
+  - Aviso legal: checkbox "Confirmo que la información capturada es correcta y
+    corresponde al equipo físico instalado en la ubicación indicada"
+  - Botón "Confirmar y Guardar" (violeta, deshabilitado hasta checkbox)
+  - Botón "Editar" por sección (vuelve al paso correspondiente)
+
+Lógica al confirmar:
+  1. Upload de fotos: POST /uploads/equipment-photo (una por una, show progreso)
+  2. PATCH /equipment/:id/assign-qr
+  3. PATCH /equipment/:id/assign-location
+  4. PATCH /equipment/:id/assign-photos  
+  5. POST  /equipment/:id/complete-setup
+  6. Limpiar store + navigate a success
+
+Manejo de errores:
+  - Si algún paso falla: mostrar el paso que falló con opción de reintentar
+  - NO reiniciar todo el flujo — conservar el draft en el store
+  - Si falla el upload de fotos por red: guardar URIs locales y reintentar en background
+```
+
+### Tipo EquipmentCard — estados visuales
+
+```typescript
+// Regla: el técnico debe ver el estado del equipo antes de comenzar mantenimiento
+export function getEquipmentReadinessStatus(equipment: Equipment): {
+  ready: boolean;
+  message: string;
+  blocking: boolean;  // si true, el técnico no puede iniciar el mantenimiento
+} {
+  if (!equipment.qrCode && !equipment.gpsCoordinates) {
+    return {
+      ready: false,
+      message: 'Este equipo requiere asignación de QR y ubicación',
+      blocking: true,
+    };
+  }
+  if (!equipment.qrCode) {
+    return { ready: false, message: 'Falta asignar código QR', blocking: true };
+  }
+  if (!equipment.gpsCoordinates) {
+    return { ready: false, message: 'Falta asignar ubicación GPS', blocking: true };
+  }
+  return { ready: true, message: 'Listo para mantenimiento', blocking: false };
+}
+```
+
+> **Regla de negocio crítica:** El flujo de mantenimiento (checkin.tsx) debe verificar `equipment.isReadyForMaintenance` antes de proceder. Si es `false`, mostrar pantalla de error explicativa con datos del Gerente de CEDIS para contactar, y NO permitir continuar.
+
+---
+
+## 11. IMPLEMENTACIÓN POR PANTALLA
 
 ### Pantalla: Login (`app/(auth)/login.tsx`)
 ```
@@ -809,7 +1256,7 @@ Al continuar: router.push('/corrective/signature')
 
 ---
 
-## 10. COMPONENTES CLAVE — IMPLEMENTACIÓN
+## 12. COMPONENTES CLAVE — IMPLEMENTACIÓN
 
 ### NoAplicaToggle.tsx
 ```typescript
@@ -864,7 +1311,7 @@ import * as Location from 'expo-location';
 
 ---
 
-## 11. GENERACIÓN DE PDF
+## 13. GENERACIÓN DE PDF
 
 ### Estrategia Recomendada
 Usar `expo-print` que acepta HTML y genera PDF nativo. Los templates HTML de `reporte.html` y `reporte-hielo.html` son la fuente de verdad.
@@ -899,7 +1346,7 @@ export async function generateAndShareReport(
 
 ---
 
-## 12. MODO OFFLINE
+## 14. MODO OFFLINE
 
 La app DEBE funcionar sin conexión a internet ya que los técnicos pueden estar en plantas industriales sin señal.
 
@@ -929,7 +1376,7 @@ interface PendingReport {
 
 ---
 
-## 13. NOTIFICACIONES PUSH
+## 15. NOTIFICACIONES PUSH
 
 ```typescript
 // Al iniciar la app:
@@ -948,7 +1395,7 @@ import * as Notifications from 'expo-notifications';
 
 ---
 
-## 14. SEGURIDAD
+## 16. SEGURIDAD
 
 ```
 Tokens JWT:
@@ -972,70 +1419,107 @@ Certificado:
 
 ---
 
-## 15. FLUJO DE TRABAJO DE DESARROLLO
+## 17. FLUJO DE TRABAJO DE DESARROLLO
 
 ### Fase 1: Setup (Día 1)
 ```bash
 npx create-expo-app calibeb-app --template tabs
 cd calibeb-app
+
+# UI y animaciones
 npx expo install nativewind tailwindcss react-native-reanimated react-native-gesture-handler
-npx expo install expo-router expo-camera expo-location expo-image-picker
-npx expo install expo-print expo-sharing expo-secure-store @react-native-async-storage/async-storage
+
+# Navegación y módulos nativos core
+npx expo install expo-router expo-camera expo-location expo-image-picker expo-haptics
+
+# PDF, archivos y almacenamiento
+npx expo install expo-print expo-sharing expo-secure-store expo-file-system
+npx expo install expo-image-manipulator    # ← compresión de fotos antes de upload
+
+# AsyncStorage y networking
+npx expo install @react-native-async-storage/async-storage
+npx expo install @react-native-community/netinfo   # ← detección offline (faltaba en v1.0)
+
+# Mapa para GPS (checkin + asignación de ubicación)
+npx expo install react-native-maps
+
+# State y formularios
 npm install zustand @tanstack/react-query axios react-hook-form zod
+
+# Firma digital y QR
 npm install react-native-signature-canvas
+
+# Utilidades
+npm install geolib                                  # ← distancia Haversine (faltaba en v1.0)
+npm install @react-native-community/datetimepicker  # ← DatePicker nativo (faltaba en v1.0)
 ```
 
 ### Fase 2: Estructura y tipos (Día 1-2)
 - Crear toda la estructura de directorios
-- Definir todos los tipos TypeScript (coordinar con agente backend)
-- Configurar NativeWind y paleta de colores
-- Setup de Zustand stores
-- Configurar axios con interceptors
+- Definir todos los tipos TypeScript — **coordinar con agente backend antes de codear**
+- Configurar NativeWind y paleta de colores (incluyendo violeta para módulo gerente)
+- Setup de Zustand stores (auth, workOrder, equipmentSetup)
+- Configurar axios con interceptors (JWT + refresh)
 
-### Fase 3: Screens de autenticación y dashboard (Día 2-3)
-- Login screen
+### Fase 3: Auth, roles y dashboard (Día 2-3)
+- Login screen con manejo de `role` en respuesta
+- Auth store con helpers `canAssignEquipment()`, `isAdmin()`
 - Dashboard con OrderCard y OrderGroup
-- ProtectedRoute / auth guard
+- Tab navigator con visibilidad condicional por rol
+- Route guard para `equipment-setup/`
 
 ### Fase 4: Flujo preventivo (Día 3-6)
-- Checkin GPS
+- Checkin GPS (con verificación `isReadyForMaintenance`)
 - QR Scanner
 - Steps 1-6 (checklists)
-- Step 7 (tabla de calibración)
+- Step 7 (tabla de calibración 12 válvulas)
 - Signature
 
 ### Fase 5: Flujo hielo y correctivo (Día 6-8)
 - Ice machine screen
 - Corrective QR → GPS → Form → Signature
 
-### Fase 6: Reportes y PDF (Día 8-10)
+### Fase 6: Módulo Asignación en Campo — Gerente CEDIS (Día 8-10)
+- Lista equipos por CEDIS con estados de asignación
+- Paso 1: QR scan con validación de disponibilidad
+- Paso 2: GPS capture + mapa + descripción
+- Paso 3: Fotografías (mínimo 2 tipos: frontal + lateral)
+- Paso 4: Confirmación + upload progresivo
+
+### Fase 7: Reportes y PDF (Día 10-12)
 - Templates HTML → funciones TypeScript
 - expo-print integration
 - Success screen con opciones de compartir
 
-### Fase 7: Integración API real (Día 10-12)
+### Fase 8: Integración API real (Día 12-14)
 - Reemplazar mock data con llamadas a calibeb-api
-- Testing de todos los endpoints
-- Manejo de errores de red
+- Testing de todos los endpoints (incluyendo equipment-setup)
+- Manejo de errores de red por pantalla
 
-### Fase 8: Offline y push notifications (Día 12-14)
+### Fase 9: Offline y push notifications (Día 14-16)
 - Queue de reportes offline
 - Push notifications registration
+- Queue de asignaciones offline (Gerente puede estar en planta sin señal)
 
-### Fase 9: QA y polish (Día 14-16)
-- Testing en iOS y Android
+### Fase 10: QA y polish (Día 16-18)
+- Testing en iOS y Android reales
+- Testing de flujo del Gerente CEDIS con coordinador de permisos
 - Ajustes de UI pixel-perfect vs prototipo
-- Edge cases (fotos fallidas, GPS sin señal, etc.)
+- Edge cases: fotos fallidas, GPS sin señal, QR ya asignado, equipo no listo
+- KeyboardAvoidingView en formularios con inputs inferiores
+- Empty states (sin órdenes, todos los equipos asignados)
 
-### Fase 10: Build de producción (Día 16+)
+### Fase 11: Build de producción (Día 18+)
 ```bash
 eas build --platform all   # Genera APK + IPA
 eas submit                 # Subir a App Store / Play Store
+# OTA updates para hotfixes sin pasar por review:
+eas update --channel production
 ```
 
 ---
 
-## 16. CONVENCIONES DE CÓDIGO (OBLIGATORIAS)
+## 18. CONVENCIONES DE CÓDIGO (OBLIGATORIAS)
 
 ### Nomenclatura
 ```
@@ -1085,7 +1569,7 @@ chore: Configuración, dependencias
 
 ---
 
-## 17. DISEÑO — FIDELIDAD AL PROTOTIPO
+## 19. DISEÑO — FIDELIDAD AL PROTOTIPO
 
 ### Reglas de diseño (extraídas del prototipo)
 
@@ -1116,39 +1600,43 @@ text-slate-500   →  text-slate-500 (igual)
 
 ---
 
-## 18. PREGUNTAS PARA EL AGENTE BACKEND (calibeb-api)
+## 20. PREGUNTAS PARA EL AGENTE BACKEND (calibeb-api)
 
-Antes de iniciar la Fase 7 (integración API real), el agente backend debe responder:
+Antes de iniciar la Fase 8 (integración API real), el agente backend debe responder:
 
 1. **¿Cuál es el URL base de la API?** (staging y producción)
 2. **¿Cuál es el mecanismo de auth?** JWT Bearer / OAuth2 / Session?
 3. **¿Los tokens JWT tienen refresh?** ¿Cuál es la expiración?
-4. **¿Existe endpoint de validación QR?** (`POST /equipment/validate-qr`) o ¿el QR es solo el serial number que se busca local?
-5. **¿Cómo se suben las fotos?** ¿Multipart FormData o base64 en JSON?
-6. **¿El reporte PDF se genera en el backend o en el móvil?** (actualmente propuesto: en el móvil con expo-print)
-7. **¿Existe paginación en `/work-orders`?** ¿Qué parámetros?
-8. **¿Hay WebSockets para updates en tiempo real** (nueva orden asignada, etc.)?
-9. **¿Los checklist templates vienen del backend** o son fijos en el cliente?
-10. **¿Cuáles endpoints ya existen** y cuáles hay que crear nuevos para mobile?
-11. **¿Cuál es el formato esperado del ReportData** (nombres de campos en la API: camelCase, snake_case)?
-12. **¿Hay un ambiente de staging** para pruebas de integración?
+4. **¿El endpoint `/auth/login` ya retorna el campo `role` en el objeto user?** Si no, hay que añadirlo — es crítico para RBAC.
+5. **¿Existe endpoint de validación QR para mantenimiento?** (`POST /equipment/validate-qr`)
+6. **¿Existe endpoint para verificar disponibilidad de QR?** (`POST /equipment/validate-qr-availability`) — necesario para el flujo de asignación.
+7. **¿Los endpoints de asignación de equipos ya existen?** (`PATCH /equipment/:id/assign-qr`, `assign-location`, `assign-photos`, `complete-setup`)
+8. **¿Cómo se suben las fotos?** ¿Multipart FormData o base64 en JSON?
+9. **¿El reporte PDF se genera en el backend o en el móvil?** (propuesto: en móvil con expo-print)
+10. **¿Existe paginación en `/work-orders` y `/equipment`?** ¿Qué parámetros (`page`, `limit`, `cursor`)?
+11. **¿Hay WebSockets para updates en tiempo real** (nueva orden, escaner de QR conflictivo)?
+12. **¿Los checklist templates vienen del backend** o son fijos en el cliente?
+13. **¿Cuál es el formato de campos** en la API: camelCase o snake_case?
+14. **¿Hay un ambiente de staging** para pruebas?
+15. **¿Qué sucede operacionalmente si un técnico intenta hacer check-in en un equipo sin QR asignado?** ¿El backend lo bloquea o solo el frontend?
 
 ---
 
-## 19. PREGUNTAS PARA EL AGENTE FRONTEND (CaliWeb)
+## 21. PREGUNTAS PARA EL AGENTE FRONTEND (CaliWeb)
 
 El agente que construyó CaliWeb puede añadir valor en:
 
 1. **¿Qué tipos TypeScript ya definiste** para WorkOrder, Client, Equipment? ¿Podemos compartirlos en un paquete `@calibeb/types`?
 2. **¿Cómo están estructurados los datos que CaliWeb consume de calibeb-api?** ¿Son los mismos que necesita mobile?
 3. **¿El dashboard ejecutivo recibe datos del móvil** en tiempo real o en batch al subir el reporte?
-4. **¿Las fotos y firmas se almacenan en el mismo storage** que usa CaliWeb?
-5. **¿Existe un design system** compartido (tokens de color, tipografía) o debemos definirlo aquí?
+4. **¿Las fotos y firmas (y las nuevas fotos de asignación de equipos) se almacenan en el mismo storage** que usa CaliWeb?
+5. **¿Existe un design system** compartido (tokens de color, tipografía)? — El móvil propone añadir `violet-700` (#7C3AED) para el módulo de Gerente CEDIS.
 6. **¿Qué features del dashboard ejecutivo** (`DASHBOARD_EJECUTIVO_CALIWEB.md`) dependen directamente de datos generados por la app móvil?
+7. **¿CaliWeb tiene una vista para que el Gerente CEDIS vea el estado de asignación de equipos** (cuáles tienen QR, cuáles les falta GPS, etc.)? Si no existe, debe crearse — es el mismo proceso desde la web.
 
 ---
 
-## 20. CHECKLIST DE COMPLETITUD — PARA EL AGENTE CONSTRUCTOR
+## 22. CHECKLIST DE COMPLETITUD — PARA EL AGENTE CONSTRUCTOR
 
 Usar este checklist para verificar que la app está lista:
 
@@ -1192,22 +1680,116 @@ Usar este checklist para verificar que la app está lista:
 - [ ] Opción compartir (email, WhatsApp)
 - [ ] PDF fiel al diseño de reporte.html / reporte-hielo.html
 
-### Offline
+### Módulo de Asignación en Campo (Gerente CEDIS)
+- [ ] Tab "Equipos" solo visible para GERENTE_CEDIS y ADMIN_GLOBAL
+- [ ] Route guard redirige a dashboard si TECNICO intenta acceder
+- [ ] Lista equipos del CEDIS con filtros PENDIENTE / PARCIAL / COMPLETADO
+- [ ] Paso 1: QR scan con validación de disponibilidad (no asignado a otro equipo)
+- [ ] Paso 2: GPS con validación de precisión (<30m), mapa preview, descripción textual
+- [ ] Paso 3: Mínimo 2 fotos (frontal + lateral) con preview y opción reintento
+- [ ] Fotos comprimidas automáticamente si > 5MB
+- [ ] Paso 4: Resumen + checkbox de confirmación legal
+- [ ] Upload progresivo con indicador (% fotos subidas)
+- [ ] En error de upload: conservar draft, opción de reintentar sin repetir el flujo
+- [ ] Equipo con asignación completa: `isReadyForMaintenance = true`
+- [ ] Flujo de técnico bloqueado en checkin si equipo no está listo
+- [ ] Pantalla informativa de error con datos del Gerente CEDIS para contactar
+- [ ] Queue offline para asignaciones (planta sin señal)
+
+### Roles y Seguridad
+- [ ] Respuesta de login incluye campo `role` y `permissions`
+- [ ] Token JWT en SecureStore (nunca AsyncStorage)
+- [ ] canAssignEquipment() retorna false para TECNICO
+- [ ] Tabs con `href: null` para rutas sin permiso
+- [ ] Backend verifica roles en todos los endpoints de `/equipment-setup/`
+
+### UX / Calidad
+- [ ] Loading states en todas las operaciones async (Spinner o Skeleton)
+- [ ] Error states por pantalla (no solo toast genérico)
+- [ ] Empty states definidos (sin órdenes, todos equipos asignados)
+- [ ] Feedback háptico en confirmaciones exitosas y errores
+- [ ] Offline banner visible cuando no hay conexión
 - [ ] Órdenes del día cacheadas
 - [ ] Reporte guardado localmente si falla upload
 - [ ] Cola de sincronización automática al recuperar conexión
-- [ ] Indicador visual de estado offline
 
-### Calidad
+### Calidad de Código
 - [ ] TypeScript sin errores (strict mode)
-- [ ] Todos los textos en español
-- [ ] Colors fieles al prototipo (#F97316, #DC2626, #1E40AF)
+- [ ] Todos los textos de UI en español
+- [ ] Colors fieles al prototipo (#F97316, #DC2626, #1E40AF, #7C3AED para gerente)
 - [ ] Fuente Inter en todos los textos
-- [ ] Pruebas en iOS y Android
-- [ ] Safe area (notch, home indicator) respetados
-- [ ] Teclado no oculta inputs (KeyboardAvoidingView)
+- [ ] Pruebas en iOS y Android reales
+- [ ] Safe area (notch, home indicator) respetados en todas las pantallas
+- [ ] KeyboardAvoidingView en todos los formularios con inputs
 
 ---
 
-*Documento generado para el proyecto Calibeb — Abril 2026*  
-*Basado en auditoría directa de `calibeb_demo.html` V5 (1,639 líneas) + `app.js` (834 líneas) + `mock-data.js` (441 líneas)*
+---
+
+## 23. REVISIÓN MULTI-PERSPECTIVA
+
+Esta sección documenta los hallazgos del análisis del documento desde 5 ángulos profesionales. Sirve como log de decisiones para los agentes constructores.
+
+### 🏗️ Arquitecto de Software
+**Problemas encontrados y resueltos en v1.2:**
+- ✅ Dependencias faltantes añadidas: `geolib`, `@react-native-community/netinfo`, `@react-native-community/datetimepicker`, `react-native-maps`, `expo-haptics`, `expo-image-manipulator`
+- ✅ Auth store tipado con `AuthUser` (antes `Technician`) para soportar múltiples roles
+- ✅ `equipmentSetup.store.ts` separado del `workOrder.store.ts` — responsabilidad única
+- ✅ Stageing URL añadida a `.env.local`
+- ✅ Variable `EXPO_PUBLIC_MAX_PHOTO_SIZE_MB` para configuración sin re-deploy
+- ⚠️ **Pendiente de decisión:** ¿tipos compartidos con CaliWeb via `@calibeb/types` monorepo? — Consultar al agente frontend
+- ⚠️ **Pendiente:** ¿El backend genera el PDF o el móvil? Impacta el modelo offline
+
+### 🎨 UI/UX Designer
+**Problemas encontrados y resueltos en v1.2:**
+- ✅ Módulo Gerente CEDIS tiene color propio (violeta `#7C3AED`) — evita confusión con flujos de técnico
+- ✅ Feedback háptico añadido (`expo-haptics`) en confirmaciones y errores
+- ✅ Empty states definidos para lista de órdenes y lista de equipos
+- ✅ Indicador de precisión GPS en tiempo real (verde/ámbar/rojo) para asignación de ubicación
+- ✅ `SetupProgress` stepper de 3 pasos para el flujo de asignación (orientación al usuario)
+- ⚠️ **Recomendación:** Añadir skeleton loaders en lugar de spinners para listas (mejor percepción de velocidad)
+- ⚠️ **Recomendación:** La pantalla de error "equipo no listo" debe mostrar el nombre y teléfono del Gerente de CEDIS responsable
+
+### 📋 Product Owner
+**Problemas encontrados y resueltos en v1.2:**
+- ✅ Prerequisito de negocio documentado: equipo necesita QR + GPS antes de poder mantener
+- ✅ `isReadyForMaintenance` como flag binario en `Equipment` — simple y verificable
+- ✅ Flujo bloqueante para técnico cuando equipo no está configurado
+- ✅ `getEquipmentReadinessStatus()` como función reutilizable
+- ✅ Gerente puede ver equipos pendientes agrupados por CEDIS
+- ⚠️ **Caso de uso pendiente:** ¿Qué pasa si el QR físico se daña en el campo y hay que reasignarlo? ¿Cuál es el proceso de re-asignación? El backend debe contemplar sobreescribir el qrCode de un equipo (solo ADMIN_GLOBAL).
+- ⚠️ **Caso de uso pendiente:** ¿Puede un técnico iniciar un correctivo en un equipo sin QR? La decisión es: NO por defecto, pero el Gerente puede hacer override desde la web.
+
+### 🧪 QA Engineer
+**Problemas encontrados y resueltos en v1.2:**
+- ✅ Validación de precisión GPS mínima: 30 metros para asignación de ubicación
+- ✅ Validación QR disponibilidad antes de asignar (no duplicar QRs)
+- ✅ Compresión automática de fotos > 5MB
+- ✅ Mínimo 2 fotos requeridas (frontal + lateral) validado en frontend y backend
+- ✅ Manejo de error granular en upload progresivo (conservar draft si falla)
+**Casos de prueba prioritarios a cubrir:**
+- [ ] QR ya asignado a otro equipo → mostrar error con nombre de ese equipo
+- [ ] GPS con precisión >30m → warning, no bloquear pero advertir
+- [ ] Sin permisos de cámara (denegados permanentemente) → instrucciones a Settings
+- [ ] Sin permisos de ubicación → instrucciones a Settings
+- [ ] Foto > 5MB → compresión automática visible al usuario
+- [ ] Red cae durante el upload progresivo → conservar fotos locales, reintentar
+- [ ] Técnico intenta acceder a `/equipment-setup/` → redirect silencioso
+- [ ] Token expira a mitad del flujo de asignación → refresh + continuar sin perder draft
+- [ ] Equipo con `isReadyForMaintenance=false` aparece en orden del técnico → pantalla de error con contexto
+
+### 🔐 Security Engineer
+**Problemas encontrados y resueltos en v1.2:**
+- ✅ RBAC en frontend (route guard) + exigencia de RBAC en backend
+- ✅ SecureStore para JWT (no AsyncStorage)
+- ✅ Nota explícita: el backend NO debe confiar solo en el frontend para verificar roles
+- ✅ `.env.local` en `.gitignore` implícito
+- ⚠️ **Pendiente:** Certificate pinning (SSL pinning) para el cliente axios — añadir en fase de producción con `expo-ssl-pinning` o configuración EAS
+- ⚠️ **Pendiente:** Las fotos de equipos son activos corporativos — confirmar con backend que las URLs de almacenamiento requieren autenticación (no sean públicas)
+- ⚠️ **Pendiente:** Log de auditoría en backend para cada acción de asignación (quién asignó qué QR, con coordenadas, a qué hora)
+
+---
+
+*Documento v1.2 — Proyecto Calibeb — Abril 2026*  
+*Basado en auditoría directa de `calibeb_demo.html` V5 (1,639 líneas) + `app.js` (834 líneas) + `mock-data.js` (441 líneas)*  
+*Revisado desde perspectivas: Arquitecto · UI/UX · Product Owner · QA · Seguridad*
